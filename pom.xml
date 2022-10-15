@@ -19,7 +19,7 @@
   <version>1.0-SNAPSHOT</version>
 
   <groupId>momo54</groupId>
-  <artifactId>WebAndCloud</artifactId>
+  <artifactId>tinygram</artifactId>
 
   <!--
     The parent pom defines common style checks and testing strategies for our samples.
@@ -42,7 +42,7 @@
 
     <checkstyle.skip>true</checkstyle.skip>
     
-    <endpoints.project.id>sobike44</endpoints.project.id>
+    <endpoints.project.id><!-- Compile/runtime dependencies --></endpoints.project.id>
   </properties>
 
   <dependencies>
