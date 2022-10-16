@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="google-signin-scope" content="profile email">
-<meta name="google-signin-client_id" content="TODO">
+<meta name="google-signin-client_id" content="">
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://unpkg.com/jwt-decode/build/jwt-decode.js"></script>
@@ -35,8 +35,43 @@
             document.getElementById('valeur').value = user
             /*const url = "_ah/api/myApi/v1/Hello"+'?access_token=' + response.credential
             fetch(url).then(response => response.text()).then(data => )*/
+            if(responsePayload != null){
+
+            }
         }
 
+        var LogPage = {
+            view: function() {
+                return m("a", {
+                    href: "#!/tinygram"
+                }, m('div',{
+                        id: 'g_id_onload',
+                        'data-client_id': '',
+                        'data-callback':"handleCredentialResponse" ,
+                    }),
+                    m('div',{class:'g_id_signin', 'data-type':'standard'}))
+            }
+        }
+
+        var count = 0
+
+        var TinyGram = {
+            view: function() {
+                return m("main", [
+                    m("h1", {
+                        class: "title"
+                    }, "My first app"),
+                    m("button", {
+                        onclick: function() {count++}
+                    }, count + " clicks"),
+                ])
+            }
+        }
+
+        m.route(document.body, "/logpage", {
+            "/logpage": LogPage,
+            "/tinygram": TinyGram,
+        })
 
     </script>
 </body>

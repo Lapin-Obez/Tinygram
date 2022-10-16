@@ -42,7 +42,7 @@
 
     <checkstyle.skip>true</checkstyle.skip>
     
-    <endpoints.project.id><!-- Compile/runtime dependencies --></endpoints.project.id>
+    <endpoints.project.id>tinygram44</endpoints.project.id>
   </properties>
 
   <dependencies>
