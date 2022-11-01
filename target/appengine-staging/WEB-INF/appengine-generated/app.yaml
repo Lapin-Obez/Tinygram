@@ -5,7 +5,7 @@ derived_file_type:
 - java_precompiled
 auto_id_policy: default
 beta_settings:
-  'source_reference': 'https://gitlab.univ-nantes.fr/E193433D/tinygram.git#90bd01d68d0debab5282e51bebf631a12082918f'
+  'source_reference': 'https://gitlab.univ-nantes.fr/E193433D/tinygram.git#e1ad7d4b28a32fefb674b9a9068ead431a8dece9'
 env_variables:
   'ENDPOINTS_SERVICE_NAME': 'tinygram44.appspot.com'
 api_version: 'user_defined'

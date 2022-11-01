@@ -1,4 +1,5 @@
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Random;
 
 import com.google.api.server.spi.auth.common.User;
@@ -46,6 +47,7 @@ public class TinyGramEndPoint {
 		e.setProperty("url", pm.url);
 		e.setProperty("body", pm.body);
 		e.setProperty("likec", 0);
+        e.setProperty("likeU", new LinkedList<String>());
 		e.setProperty("date", new Date());
 
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -138,12 +140,13 @@ public class TinyGramEndPoint {
 		if (user == null) {
 			throw new UnauthorizedException("Invalid credentials");
 		}
-
-		Entity e = new Entity("Post", Long.MAX_VALUE-(new Date()).getTime()+":"+user.getEmail());
+        Long date = Long.MAX_VALUE-(new Date()).getTime();
+		Entity e = new Entity("Post", user.getEmail() +":"+ date);//Il faut que le sender soit placé avant la date afin d'éviter de créer un hot spot
 		e.setProperty("owner", user.getEmail());
 		e.setProperty("url", pm.url);
 		e.setProperty("body", pm.body);
 		e.setProperty("likec", 0);
+        e.setProperty("likeU", new LinkedList<String>());//Liste des users qui ont like c'te connerie
 		e.setProperty("date", new Date());
 
 ///		Solution pour pas projeter les listes
