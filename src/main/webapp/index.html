@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="google-signin-scope" content="profile email">
-<meta name="google-signin-client_id" content="">
+<meta name="google-signin-client_id" content="622187817241-fqke0l023q148lc21gv1qthq82imi4mg.apps.googleusercontent.com">
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://unpkg.com/jwt-decode/build/jwt-decode.js"></script>
@@ -36,7 +36,8 @@
             /*const url = "_ah/api/myApi/v1/Hello"+'?access_token=' + response.credential
             fetch(url).then(response => response.text()).then(data => )*/
             if(responsePayload != null){
-
+                m.route.set("/TinyGram")
+                m.redraw();
             }
         }
 
@@ -46,7 +47,7 @@
                     href: "#!/tinygram"
                 }, m('div',{
                         id: 'g_id_onload',
-                        'data-client_id': '',
+                        'data-client_id': '622187817241-fqke0l023q148lc21gv1qthq82imi4mg.apps.googleusercontent.com',
                         'data-callback':"handleCredentialResponse" ,
                     }),
                     m('div',{class:'g_id_signin', 'data-type':'standard'}))
