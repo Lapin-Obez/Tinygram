@@ -57,6 +57,18 @@ public class TinyGramEndPoint {
 		return e;
 	}
 
+    @ApiMethod(name = "addUser", httpMethod = HttpMethod.GET)
+	public Entity addUser(@Named("User") User user) {
+        String email = user.getEmail();
+		Entity e = new Entity("User", "" + email);
+        e.setProperty("ID", user.getId());
+        e.setProperty("name", email);
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		datastore.put(e);
+
+		return e;
+	}
+
 	@ApiMethod(name = "mypost", httpMethod = HttpMethod.GET)
 	public CollectionResponse<Entity> mypost(@Named("name") String name, @Nullable @Named("next") String cursorString) {
 

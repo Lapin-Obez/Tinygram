@@ -35,6 +35,12 @@
             fetch(url).then(response => response.text()).then(data => )*/
             if(responsePayload != null){
                 m.route.set("/tinygram");
+                m.request({
+	                method: "POST",
+	                url: "_ah/api/myApi/v1/addUser/"+response
+	            }).then(function(result) {
+	        	console.log("got:",result)
+	        });
                 m.redraw();
             }
         }
