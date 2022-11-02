@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>TinyGram</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="google-signin-scope" content="profile email">
+<meta name="google-signin-client_id" content="622187817241-fqke0l023q148lc21gv1qthq82imi4mg.apps.googleusercontent.com">
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://unpkg.com/jwt-decode/build/jwt-decode.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
+
+<script src="https://unpkg.com/mithril/mithril.js"></script>
+
+</head>
+<body>
+    <script>
+        function handleCredentialResponse(response) {
+            console.log("callback called:"+response.credential)
+            // decodeJwtResponse() is a custom function defined by you
+            // to decode the credential response.
+            const responsePayload = jwt_decode(response.credential);
+            console.log("ID: " + responsePayload.sub);
+            console.log('Full Name: ' + responsePayload.name);
+            console.log('Given Name: ' + responsePayload.given_name);
+            console.log('Family Name: ' + responsePayload.family_name);
+            console.log("Image URL: " + responsePayload.picture);
+            console.log("Email: " + responsePayload.email);
+            /*const url = "_ah/api/myApi/v1/Hello"+'?access_token=' + response.credential
+            fetch(url).then(response => response.text()).then(data => )*/
+            if(responsePayload != null){
+                m.route.set("/tinygram");
+                m.redraw();
+            }
+        }
+
+        var LogPage = {
+            view: function() {
+                return m("a", {
+                    href: "#!/tinygram"
+                }, m('div',{
+                        id: 'g_id_onload',
+                        'data-client_id': '622187817241-fqke0l023q148lc21gv1qthq82imi4mg.apps.googleusercontent.com',
+                        'data-callback':"handleCredentialResponse" ,
+                    }),
+                    m('div',{class:'g_id_signin', 'data-type':'standard'}))
+            }
+        }
+
+        var count = 0
+
+        var TinyGram = {
+            view: function() {
+                return m("main", [
+                    m("h1", {
+                        class: "title"
+                    }, "My first app"),
+                    m("button", {
+                        onclick: function() {count++}
+                    }, count + " clicks"),
+                ])
+            }
+        }
+
+        m.route(document.body, "/logpage", {
+            "/logpage": LogPage,
+            "/tinygram": TinyGram,
+        })
+        m.redraw();        
+    </script>
+</body>
+</html>
