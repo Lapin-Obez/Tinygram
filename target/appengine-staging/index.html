@@ -36,7 +36,7 @@
             if(responsePayload != null){
                 m.route.set("/tinygram");
                 m.request({
-	                method: "POST",
+	                method: "GET",
 	                url: "_ah/api/myApi/v1/addUser?access_token="+response.credential
 	            }).then(function(result){
 	        	    console.log("got:",result)

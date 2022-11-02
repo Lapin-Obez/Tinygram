@@ -60,7 +60,7 @@ public class TinyGramEndPoint {
     @ApiMethod(name = "addUser", httpMethod = HttpMethod.GET)
 	public Entity addUser(@Named("User") User user) {
         String email = user.getEmail();
-		Entity e = new Entity("User", "" + email);
+		Entity e = new Entity("User",user.getId());
         e.setProperty("ID", user.getId());
         e.setProperty("name", email);
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
