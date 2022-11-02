@@ -37,10 +37,12 @@
                 m.route.set("/tinygram");
                 m.request({
 	                method: "POST",
-	                url: "_ah/api/myApi/v1/addUser/"+response
-	            }).then(function(result) {
-	        	console.log("got:",result)
-	        });
+	                url: "_ah/api/myApi/v1/addUser?access_token="+response.credential
+	            }).then(function(result){
+	        	    console.log("got:",result)
+	            }).catch(function (e) {
+                    console.log(e);
+                })
                 m.redraw();
             }
         }
