@@ -1,3 +1,4 @@
+package TinyGram;
 
 public class PostMessage {
 	public String owner;

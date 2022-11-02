@@ -1,3 +1,4 @@
+package TinyGram;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Random;
@@ -58,7 +59,11 @@ public class TinyGramEndPoint {
 	}
 
     @ApiMethod(name = "addUser", httpMethod = HttpMethod.GET)
-	public Entity addUser(@Named("User") User user) {
+	public Entity addUser(User user) throws UnauthorizedException {
+
+		if (user == null) {
+			throw new UnauthorizedException("Invalid credentials");
+		}
         String email = user.getEmail();
 		Entity e = new Entity("User",user.getId());
         e.setProperty("ID", user.getId());

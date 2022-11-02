@@ -35,7 +35,7 @@
                   
             <param-name>services</param-name>
                   
-            <param-value>TinyGramEndPoint</param-value>
+            <param-value>TinyGram.TinyGramEndPoint</param-value>
                 
         </init-param>
             
