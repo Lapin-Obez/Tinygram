@@ -115,7 +115,7 @@ public class TinyGramEndPoint {
 		if (user == null) {
 			throw new UnauthorizedException("Invalid credentials");
 		}
-
+        
 		Query q = new Query("Post").
 		    setFilter(new FilterPredicate("owner", FilterOperator.EQUAL, user.getEmail()));
 
