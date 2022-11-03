@@ -19,6 +19,7 @@
 </head>
 <body>
     <script>
+        var me;
         function handleCredentialResponse(response) {
             console.log("callback called:"+response.credential)
             // decodeJwtResponse() is a custom function defined by you
@@ -38,7 +39,8 @@
 	                method: "GET",
 	                url: "_ah/api/myApi/v1/addUser?access_token="+response.credential
 	            }).then(function(result){
-	        	    console.log("got:",result);
+	        	    console.log("got:",result.properties.name);
+                    me = response.credential;
                     m.route.set("/tinygram");
 	            }).catch(function (e) {
                     console.log(e);
@@ -61,7 +63,7 @@
         }
 
         // for the example
-var me="f1"
+
  
  var PostForm = {
          url:"",
@@ -126,19 +128,21 @@ var me="f1"
                  }})
          },
           postMessage: function() {
-              var data={'owner':me,
+              var data={
                       'url':PostForm.url,
                       'body':PostForm.body}
               console.log("post:"+data)
               return m.request({
                   method: "POST",
-                  url: "_ah/api/myApi/v1/postMessage",
-                  params: data,
+                  url: "_ah/api/myApi/v1/postMessage?access_token="+me,
+                  params: data,              
               })
                .then(function(result) {
                        console.log("got:",result)
                        MyPost.loadList()
-                   })
+                   }).catch(function (e) {
+                    console.log(e);
+                })
           }
  }
  

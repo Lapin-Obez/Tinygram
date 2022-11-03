@@ -1,6 +1,7 @@
 package TinyGram;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 import com.google.api.server.spi.auth.common.User;
@@ -40,24 +41,6 @@ public class TinyGramEndPoint {
     
     Random r = new Random();
 
-	@ApiMethod(name = "postMessage", httpMethod = HttpMethod.POST)
-	public Entity postMessage(PostMessage pm) {
-
-		Entity e = new Entity("Post"); // quelle est la clef ?? non specifié -> clef automatique
-		e.setProperty("owner", pm.owner);
-		e.setProperty("url", pm.url);
-		e.setProperty("body", pm.body);
-		e.setProperty("likec", 0);
-        e.setProperty("likeU", new LinkedList<String>());
-		e.setProperty("date", new Date());
-
-		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-		Transaction txn = datastore.beginTransaction();
-		datastore.put(e);
-		txn.commit();
-		return e;
-	}
-
     @ApiMethod(name = "addUser", httpMethod = HttpMethod.GET)
 	public Entity addUser(User user) throws UnauthorizedException {
 
@@ -68,6 +51,7 @@ public class TinyGramEndPoint {
 		Entity e = new Entity("User",user.getId());
         e.setProperty("ID", user.getId());
         e.setProperty("name", email);
+        e.setProperty("iFollowThem", new LinkedList<String>());
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		datastore.put(e);
 
@@ -151,31 +135,72 @@ public class TinyGramEndPoint {
 		return CollectionResponse.<Entity>builder().setItems(results).setNextPageToken(cursorString).build();
 	}
 
-	@ApiMethod(name = "postMsg", httpMethod = HttpMethod.POST)
-	public Entity postMsg(User user, PostMessage pm) throws UnauthorizedException {
+
+	@ApiMethod(name = "postMessage", httpMethod = HttpMethod.POST)
+	public Entity postMessage(User user, PostMessage pm) throws UnauthorizedException {
 
 		if (user == null) {
 			throw new UnauthorizedException("Invalid credentials");
 		}
         Long date = Long.MAX_VALUE-(new Date()).getTime();
-		Entity e = new Entity("Post", user.getEmail() +":"+ date);//Il faut que le sender soit placé avant la date afin d'éviter de créer un hot spot
+        String id = user.getEmail() +":"+ date;
+		Entity e = new Entity("Post", id);//Il faut que le sender soit placé avant la date afin d'éviter de créer un hot spot
 		e.setProperty("owner", user.getEmail());
 		e.setProperty("url", pm.url);
 		e.setProperty("body", pm.body);
 		e.setProperty("likec", 0);
         e.setProperty("likeU", new LinkedList<String>());//Liste des users qui ont like c'te connerie
 		e.setProperty("date", new Date());
-
-///		Solution pour pas projeter les listes
-//		Entity pi = new Entity("PostIndex", e.getKey());
-//		HashSet<String> rec=new HashSet<String>();
-//		pi.setProperty("receivers",rec);
-		
+        ///Solution pour pas projeter les listes
+        //Entity pi = new Entity("PostIndex", e.getKey());
+        //HashSet<String> rec=new HashSet<String>();
+        //pi.setProperty("receivers",rec);
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		Transaction txn = datastore.beginTransaction();
 		datastore.put(e);
-//		datastore.put(pi);
 		txn.commit();
+        try {
+            likeMessage(user, id);
+        } catch (Exception test) {
+            System.out.println("ça vallait le coup");
+        }
+        
 		return e;
 	}
+
+    @ApiMethod(name = "likeMessage", httpMethod = HttpMethod.POST)
+    public Entity likeMessage(User user, String idMessage)throws UnauthorizedException, Exception {
+        if (user == null) {
+			throw new UnauthorizedException("Invalid credentials");
+		}
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        Transaction txn = datastore.beginTransaction();
+        Query query = new Query("Post").setFilter(new FilterPredicate("__key__",
+        FilterOperator.EQUAL,
+        idMessage));
+        PreparedQuery pq = datastore.prepare(query);
+        Entity e = pq.asSingleEntity();
+        
+        //Si on récupère plusieurs entity y a un problème wala
+        if(e == null) throw new UnauthorizedException("Plusieurs messages ont le même ID, ACHTUNG !!!!!");
+        try {
+            long c = (long)e.getProperty("likec");
+            
+            e.setProperty("likec",c+1);
+            LinkedList<String> l = (LinkedList<String>)e.getProperty("likeU");
+            
+            e.setProperty("likeU",l.add(user.getEmail()));
+            datastore.put(e);
+            txn.commit();
+        } catch (Exception error) {
+            // TODO Auto-generated catch block
+            error.printStackTrace();
+        }
+        
+        
+        
+
+        
+        return e;
+    }
 }
