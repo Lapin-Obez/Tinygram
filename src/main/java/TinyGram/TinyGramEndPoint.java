@@ -159,17 +159,11 @@ public class TinyGramEndPoint {
 		Transaction txn = datastore.beginTransaction();
 		datastore.put(e);
 		txn.commit();
-        try {
-            likeMessage(user, id);
-        } catch (Exception test) {
-            System.out.println("ça vallait le coup");
-        }
-        
 		return e;
 	}
 
     @ApiMethod(name = "likeMessage", httpMethod = HttpMethod.POST)
-    public Entity likeMessage(User user, String idMessage)throws UnauthorizedException, Exception {
+    public Entity likeMessage(User user, @Named("idMessage")String idMessage)throws UnauthorizedException, Exception {
         if (user == null) {
 			throw new UnauthorizedException("Invalid credentials");
 		}
