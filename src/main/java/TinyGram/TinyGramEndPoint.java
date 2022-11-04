@@ -3,7 +3,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Logger;
 
+import com.google.appengine.api.datastore.Key;
 import com.google.api.server.spi.auth.common.User;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -19,6 +21,7 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query.FilterOperator;
@@ -38,7 +41,7 @@ import com.google.appengine.api.datastore.Transaction;
      )
 
 public class TinyGramEndPoint {
-    
+    private static final Logger log = Logger.getLogger(TinyGramEndPoint.class.getName());
     Random r = new Random();
 
     @ApiMethod(name = "addUser", httpMethod = HttpMethod.GET)
@@ -149,7 +152,9 @@ public class TinyGramEndPoint {
 		e.setProperty("url", pm.url);
 		e.setProperty("body", pm.body);
 		e.setProperty("likec", 0);
-        e.setProperty("likeU", new LinkedList<String>());//Liste des users qui ont like c'te connerie
+        LinkedList l = new LinkedList<String>();
+        l.add("MrCool");
+        e.setProperty("likeU", l);//Liste des users qui ont like c'te connerie
 		e.setProperty("date", new Date());
         ///Solution pour pas projeter les listes
         //Entity pi = new Entity("PostIndex", e.getKey());
@@ -162,32 +167,32 @@ public class TinyGramEndPoint {
 		return e;
 	}
 
-    @ApiMethod(name = "likeMessage", httpMethod = HttpMethod.POST)
-    public Entity likeMessage(User user, @Named("idMessage")String idMessage)throws UnauthorizedException, Exception {
+    @ApiMethod(name = "likeMessage", httpMethod = HttpMethod.GET)
+    public Entity likeMessage(@Named("idMessage")String idMessage,User user)throws UnauthorizedException, Exception {
         if (user == null) {
 			throw new UnauthorizedException("Invalid credentials");
 		}
+
+        Key idMessageKey = KeyFactory.createKey("Post", idMessage);
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         Transaction txn = datastore.beginTransaction();
-        Query query = new Query("Post").setFilter(new FilterPredicate("__key__",
-        FilterOperator.EQUAL,
-        idMessage));
+        Query query = new Query("Post").setFilter(new FilterPredicate("__key__",FilterOperator.EQUAL,idMessageKey));
         PreparedQuery pq = datastore.prepare(query);
         Entity e = pq.asSingleEntity();
-        
+        //log.info("ENTITY" +e.toString());
         //Si on récupère plusieurs entity y a un problème wala
         if(e == null) throw new UnauthorizedException("Plusieurs messages ont le même ID, ACHTUNG !!!!!");
         try {
-            long c = (long)e.getProperty("likec");
-            
-            e.setProperty("likec",c+1);
+            long c = (long)e.getProperty("likec")+1;
+            //log.info("LIKEC"+c);
+            e.setProperty("likec",c);
             LinkedList<String> l = (LinkedList<String>)e.getProperty("likeU");
-            
-            e.setProperty("likeU",l.add(user.getEmail()));
+            l.add(user.getEmail());
+            e.setProperty("likeU",l);
+            //log.info("LIKEU %s"+l.toString());
             datastore.put(e);
             txn.commit();
         } catch (Exception error) {
-            // TODO Auto-generated catch block
             error.printStackTrace();
         }
         

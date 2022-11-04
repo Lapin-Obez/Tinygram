@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>TinyGram</title>
 <meta charset="utf-8">
-<link rel="icon" href="https://tinygram-365116.ew.r.appspot.com/favicon.ico">
+<link rel="icon" href="/favicon.ico">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="google-signin-scope" content="profile email">
 <meta name="google-signin-client_id" content="622187817241-fqke0l023q148lc21gv1qthq82imi4mg.apps.googleusercontent.com">
@@ -74,8 +74,9 @@
                             m('div',{class:'subtitle'},"My Posts"),
                             m('table', {class:'table is-striped'},[
                                 m('tr', [
-                                m('th', {width:"200px"}, "url"),
-                                m('th', {width:"50px"}, "body"),
+                            //  m("img",{"src":this.url}), pour les images à la place de juste mettre l'url peut être
+                                m('th', {width:"300px"}, "url"),
+                                m('th', {width:"100px"}, "body"),
                                 m('th',{class:"button"},"like")
                                 ])
                             ])
@@ -116,7 +117,7 @@
          loadList: function() {
              return m.request({
                  method: "GET",
-                 url: "_ah/api/myApi/v1/mypost/"+me})
+                 url: "_ah/api/myApi/v1/getPost?access_token="+me})
              .then(function(result) {
                  console.log("got:",result)
                  MyPost.list=result.items
@@ -140,19 +141,20 @@
                  }})
          },
           postMessage: function() {
-              var data={
+              /*var data={
                       'url':PostForm.url,
-                      'body':PostForm.body}
-              console.log("post:"+data)
+                      'body':PostForm.body}*/
+              //console.log("post:"+data)
               return m.request({
-                  method: "POST",
-                  url: "_ah/api/myApi/v1/postMessage?access_token="+me,
-                  params: data,              
+                  method: "GET",//"_ah/api/myApi/v1/postMessage?access_token="+me
+                  url: "_ah/api/myApi/v1/likeMessage/gabrielpouplin@gmail.com:9223370369274447186/?access_token="+me,
+                  //params : data,            
               })
                .then(function(result) {
-                       console.log("got:",result)
-                       MyPost.loadList()
-                   }).catch(function (e) {
+                    console.log("got:",result)
+                    
+
+                }).catch(function (e) {
                     console.log(e);
                 })
           }
