@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>TinyGram</title>
-<meta charset="utf-8">
-<link rel="icon" href="/favicon.ico">
+<!-- favicon.png and application.css always GET 404 error and idk why
+<link rel="stylesheet" href="style/application.css">
+<link rel="icon" href="style/favicon.png">
+-->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="google-signin-scope" content="profile email">
 <meta name="google-signin-client_id" content="622187817241-fqke0l023q148lc21gv1qthq82imi4mg.apps.googleusercontent.com">
@@ -81,6 +83,7 @@
                                 ])
                             ])
                         ]),
+                    m('div',{class:'imageUser'},m("img",{"src":jwt_decode(me).picture})),
                     m("form", {
                     onsubmit: function(e) {
                         e.preventDefault()
