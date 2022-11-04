@@ -68,32 +68,44 @@
  var PostForm = {
          url:"",
          body:"",
-           view: function() {
-             return m("form", {
-               onsubmit: function(e) {
-                 e.preventDefault()
-                 if (url="") {url="https://dummyimage.com/320x200/000/fff&text="+Date.now()} 
-                 if (body="") {body="bla bla bla \n"+Date.now()}
-                 MyPost.postMessage()
-               }}, 
-               [
-                 m('div', {class:'field'},[
-                  m("label", {class:'label'},"URL"),
-                  m('div',{class:'control'}, m("input[type=text]", {
-                   class:'input is-rounded',
-                   placeholder:"Your url",
-                      oninput: function(e) {PostForm.url = e.target.value}})),
- //		         m("img",{"src":this.url}),
-                 ]),
-               m('div',{class:'field'},[
-                   m("label", {class: 'label'},"Body"),
-                   m('div',{class:'control'},m("input[type=textarea]", {
-                 class:'textarea',
-                 placeholder:"your text",
-                 oninput: function(e) { PostForm.body = e.target.value }})),
-                 ]),
-               m('div',{class:'control'},m("button[type=submit]", {class:'button is-link'},"Post")),
-             ])
+           view: function(){
+               return m("main",[
+                        m('div', [
+                            m('div',{class:'subtitle'},"My Posts"),
+                            m('table', {class:'table is-striped'},[
+                                m('tr', [
+                                m('th', {width:"200px"}, "url"),
+                                m('th', {width:"50px"}, "body"),
+                                m('th',{class:"button"},"like")
+                                ])
+                            ])
+                        ]),
+                    m("form", {
+                    onsubmit: function(e) {
+                        e.preventDefault()
+                        if (url="") {url="https://dummyimage.com/320x200/000/fff&text="+Date.now()} 
+                        if (body="") {body="bla bla bla \n"+Date.now()}
+                        MyPost.postMessage()
+                    }}, 
+                    [
+                        m('div', {class:'field'},[
+                        m("label", {class:'label'},"URL"),
+                        m('div',{class:'control'}, m("input[type=text]", {
+                        class:'input is-rounded',
+                        placeholder:"Your url",
+                            oninput: function(e) {PostForm.url = e.target.value}})),
+        //		         m("img",{"src":this.url}),
+                        ]),
+                    m('div',{class:'field'},[
+                        m("label", {class: 'label'},"Body"),
+                        m('div',{class:'control'},m("input[type=textarea]", {
+                        class:'textarea',
+                        placeholder:"your text",
+                        oninput: function(e) { PostForm.body = e.target.value }})),
+                        ]),
+                    m('div',{class:'control'},m("button[type=submit]", {class:'button is-link'},"Post")),
+                    ])
+               ])
            }
          }
  
