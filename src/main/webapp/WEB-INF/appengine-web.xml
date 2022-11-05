@@ -10,6 +10,12 @@
     </include>
     <include path="/**.js" >
     </include>
+    <include path="/**.css" >
+    </include>
+    <include path="/**.png" >
+    </include>
+    <include path="/**.ico" >
+    </include>
     
   </static-files>
   <system-properties>
