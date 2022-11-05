@@ -184,10 +184,8 @@ public class TinyGramEndPoint {
         if(e == null) throw new UnauthorizedException("Plusieurs messages ont le même ID, ACHTUNG !!!!!");
         try {
             List<String> l = (List<String>)e.getProperty("likeU");
-            Query verif = new Query("Post").setFilter(new FilterPredicate("likeU",FilterOperator.EQUAL,user.getEmail()));
-            PreparedQuery pq2 = datastore.prepare(verif);
-            FetchOptions fo = FetchOptions.Builder.withLimit(1);
-            if (pq2.countEntities(fo)>0){
+            //Query qtest = new Query("Post").setFilter(new FilterPredicate("__key__",FilterOperator.EQUAL,idMessageKey)).setFilter(new FilterPredicate("likeU",FilterOperator.EQUAL,user.getEmail()));
+            if (l.contains(user.getEmail())){
                 throw new UnauthorizedException("Vous avez déjà like ce post : -> tocard (de toute façon seul un margoulin peut aller lire ce message)");
             }
             l.add(user.getEmail());
