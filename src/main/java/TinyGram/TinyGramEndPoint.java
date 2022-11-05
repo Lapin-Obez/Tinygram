@@ -183,23 +183,24 @@ public class TinyGramEndPoint {
         //Si on récupère plusieurs entity y a un problème wala
         if(e == null) throw new UnauthorizedException("Plusieurs messages ont le même ID, ACHTUNG !!!!!");
         try {
+            List<String> l = (List<String>)e.getProperty("likeU");
+            Query verif = new Query("Post").setFilter(new FilterPredicate("likeU",FilterOperator.EQUAL,user.getEmail()));
+            PreparedQuery pq2 = datastore.prepare(verif);
+            FetchOptions fo = FetchOptions.Builder.withLimit(1);
+            if (pq2.countEntities(fo)>0){
+                throw new UnauthorizedException("Vous avez déjà like ce post : -> tocard (de toute façon seul un margoulin peut aller lire ce message)");
+            }
+            l.add(user.getEmail());
+            e.setProperty("likeU",l);
             long c = (long)e.getProperty("likec")+1;
             //log.info("LIKEC"+c);
             e.setProperty("likec",c);
-            LinkedList<String> l = (LinkedList<String>)e.getProperty("likeU");
-            l.add(user.getEmail());
-            e.setProperty("likeU",l);
             //log.info("LIKEU %s"+l.toString());
             datastore.put(e);
             txn.commit();
         } catch (Exception error) {
             error.printStackTrace();
         }
-        
-        
-        
-
-        
         return e;
     }
 }

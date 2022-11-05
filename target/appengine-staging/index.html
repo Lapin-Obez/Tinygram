@@ -3,10 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>TinyGram</title>
-<!-- favicon.png and application.css always GET 404 error and idk why
-<link rel="stylesheet" href="style/application.css">
-<link rel="icon" href="style/favicon.png">
--->
+<link rel="stylesheet" href="application.css">
+<link rel="icon" href="favicon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="google-signin-scope" content="profile email">
 <meta name="google-signin-client_id" content="622187817241-fqke0l023q148lc21gv1qthq82imi4mg.apps.googleusercontent.com">
@@ -144,13 +142,13 @@
                  }})
          },
           postMessage: function() {
-              /*var data={
+             /* var data={
                       'url':PostForm.url,
-                      'body':PostForm.body}*/
-              //console.log("post:"+data)
+                      'body':PostForm.body}
+              console.log("post:"+data)*/
               return m.request({
                   method: "GET",//"_ah/api/myApi/v1/postMessage?access_token="+me
-                  url: "_ah/api/myApi/v1/likeMessage/gabrielpouplin@gmail.com:9223370369274447186/?access_token="+me,
+                  url: "_ah/api/myApi/v1/likeMessage/gabrielpouplin@gmail.com:9223370369193831382/?access_token="+me,
                   //params : data,            
               })
                .then(function(result) {

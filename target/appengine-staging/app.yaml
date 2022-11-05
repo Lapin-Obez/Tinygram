@@ -5,7 +5,7 @@ derived_file_type:
 - java_precompiled
 auto_id_policy: default
 beta_settings:
-  'source_reference': 'https://gitlab.univ-nantes.fr/E193433D/tinygram.git#f31164d97f8650c2b261b5bf36259f157e871827'
+  'source_reference': 'https://gitlab.univ-nantes.fr/E193433D/tinygram.git#65976c2d45f91a21305a444e505e63f344db757c'
 env_variables:
   'ENDPOINTS_SERVICE_NAME': 'tinygram-365116.ew.r.appspot.com'
 api_version: 'user_defined'
@@ -18,6 +18,24 @@ handlers:
   secure: optional
 - url: (/)
   static_files: __static__\1index.html
+  upload: __NOT_USED__
+  require_matching_file: True
+  login: optional
+  secure: optional
+- url: (/.*\.ico)
+  static_files: __static__\1
+  upload: __NOT_USED__
+  require_matching_file: True
+  login: optional
+  secure: optional
+- url: (/.*\.png)
+  static_files: __static__\1
+  upload: __NOT_USED__
+  require_matching_file: True
+  login: optional
+  secure: optional
+- url: (/.*\.css)
+  static_files: __static__\1
   upload: __NOT_USED__
   require_matching_file: True
   login: optional

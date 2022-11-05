@@ -1,2 +1,11 @@
+Timeline.class
+JsonConverter.class
+Post.class
+NewPost.class
+NewUser.class
 TinyGram/TinyGramEndPoint.class
+User.class
+AllPosts.class
 TinyGram/PostMessage.class
+AllUsers.class
+Datastore.class
