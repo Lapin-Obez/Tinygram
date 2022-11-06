@@ -1,8 +1,15 @@
-imageUser
+.imageUser
 {
-    position: relative;
+    position: absolute;
+    border-radius: 50%;
     width: 32px;
     height: 32px;
-    top: 20px;
+    top: 10px;
     right: 20px;
+}
+
+.listMyPost
+{
+    color: rgb(27, 21, 83);
+    font-weight: bold;
 }
