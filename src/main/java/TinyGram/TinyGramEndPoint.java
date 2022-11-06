@@ -61,6 +61,37 @@ public class TinyGramEndPoint {
 		return e;
 	}
 
+    @ApiMethod(name = "followSomeone", httpMethod = HttpMethod.GET)
+    public Entity followSomeone(@Named("mailUser")String mailUser,User me)throws UnauthorizedException, Exception {
+        if (me == null) {
+			throw new UnauthorizedException("Invalid credentials");
+		}
+
+        //Key idMessageKey = KeyFactory.createKey("User", me.getId());
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        Transaction txn = datastore.beginTransaction();
+        Query query = new Query("User").setFilter(new FilterPredicate("__key__",FilterOperator.EQUAL,me.getId()));
+        PreparedQuery pq = datastore.prepare(query);
+        Entity e = pq.asSingleEntity();
+        //log.info("ENTITY" +e.toString());
+        //Si on récupère plusieurs entity y a un problème wala
+        if(e == null) throw new UnauthorizedException("Plusieurs messages ont le même ID, ACHTUNG !!!!!");
+        try {
+            List<String> l = (List<String>)e.getProperty("iFollowThem");
+            //Query qtest = new Query("Post").setFilter(new FilterPredicate("__key__",FilterOperator.EQUAL,idMessageKey)).setFilter(new FilterPredicate("likeU",FilterOperator.EQUAL,user.getEmail()));
+            if (l.contains(mailUser)){
+                throw new UnauthorizedException("Vous avez déjà like ce post : -> tocard (de toute façon seul un margoulin peut aller lire ce message)");
+            }
+            l.add(mailUser);
+            e.setProperty("iFollowThem",l);
+            datastore.put(e);
+            txn.commit();
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+        return e;
+    }
+
 	@ApiMethod(name = "mypost", httpMethod = HttpMethod.GET)
 	public CollectionResponse<Entity> mypost(@Named("name") String name, @Nullable @Named("next") String cursorString) {
 
