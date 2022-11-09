@@ -54,7 +54,9 @@ public class TinyGramEndPoint {
 		Entity e = new Entity("User",user.getId());
         e.setProperty("ID", user.getId());
         e.setProperty("name", email);
-        e.setProperty("iFollowThem", new LinkedList<String>());
+        List l =new LinkedList<String>();
+        l.add("MrCool");
+        e.setProperty("iFollowThem", l);
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		datastore.put(e);
 
@@ -67,10 +69,10 @@ public class TinyGramEndPoint {
 			throw new UnauthorizedException("Invalid credentials");
 		}
 
-        //Key idMessageKey = KeyFactory.createKey("User", me.getId());
+        Key myID = KeyFactory.createKey("User", me.getId());
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         Transaction txn = datastore.beginTransaction();
-        Query query = new Query("User").setFilter(new FilterPredicate("__key__",FilterOperator.EQUAL,me.getId()));
+        Query query = new Query("User").setFilter(new FilterPredicate("__key__",FilterOperator.EQUAL,myID));
         PreparedQuery pq = datastore.prepare(query);
         Entity e = pq.asSingleEntity();
         //log.info("ENTITY" +e.toString());
