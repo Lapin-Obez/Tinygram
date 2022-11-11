@@ -149,7 +149,7 @@
               console.log("post:"+data)*/
               return m.request({
                   method: "GET",//"_ah/api/myApi/v1/postMessage?access_token="+me
-                  url: "_ah/api/myApi/v1/followSomeone/mr.matemeriau@gmail.com/?access_token="+me,
+                  url: "_ah/api/myApi/v1/getPost?access_token="+me+"?next=",
                   //params : data,            
               })
                .then(function(result) {

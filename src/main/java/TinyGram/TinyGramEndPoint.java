@@ -62,13 +62,25 @@ public class TinyGramEndPoint {
 
 		return e;
 	}
+    @ApiMethod(name = "getFollows", httpMethod = HttpMethod.GET)
+	public List<String> getFollows(User user) throws UnauthorizedException {
+		if (user == null) {
+			throw new UnauthorizedException("Invalid credentials");
+		}
+        Query q = new Query("User").setFilter(new FilterPredicate("name", FilterOperator.EQUAL, user.getEmail()));
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+	    PreparedQuery pq = datastore.prepare(q);
+        Entity e = pq.asSingleEntity();
+        if(e == null) throw new UnauthorizedException("Plusieurs Users on la même adresse mail");
+        List<String> l = (List<String>)e.getProperty("iFollowThem");
+	    return  l;
+	}
 
     @ApiMethod(name = "followSomeone", httpMethod = HttpMethod.GET)
     public Entity followSomeone(@Named("mailUser")String mailUser,User me)throws UnauthorizedException, Exception {
         if (me == null) {
 			throw new UnauthorizedException("Invalid credentials");
 		}
-
         Key myID = KeyFactory.createKey("User", me.getId());
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         Transaction txn = datastore.beginTransaction();
@@ -117,7 +129,7 @@ public class TinyGramEndPoint {
 	    FetchOptions fetchOptions = FetchOptions.Builder.withLimit(2);
 	    
 	    if (cursorString != null) {
-		fetchOptions.startCursor(Cursor.fromWebSafeString(cursorString));
+		    fetchOptions.startCursor(Cursor.fromWebSafeString(cursorString));
 		}
 	    
 	    QueryResultList<Entity> results = pq.asQueryResultList(fetchOptions);
@@ -127,8 +139,7 @@ public class TinyGramEndPoint {
 	    
 	}
     
-	@ApiMethod(name = "getPost",
-		   httpMethod = ApiMethod.HttpMethod.GET)
+	@ApiMethod(name = "getPost",httpMethod = ApiMethod.HttpMethod.GET)
 	public CollectionResponse<Entity> getPost(User user, @Nullable @Named("next") String cursorString)
 			throws UnauthorizedException {
 
