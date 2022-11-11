@@ -62,8 +62,8 @@ public class TinyGramEndPoint {
 
 		return e;
 	}
-    @ApiMethod(name = "getFollows", httpMethod = HttpMethod.GET)
-	public List<String> getFollows(User user) throws UnauthorizedException {
+    @ApiMethod(name = "myFollows", httpMethod = HttpMethod.GET)
+	public List<String> myFollows(User user) throws UnauthorizedException {
 		if (user == null) {
 			throw new UnauthorizedException("Invalid credentials");
 		}
@@ -106,23 +106,19 @@ public class TinyGramEndPoint {
         return e;
     }
 
-	@ApiMethod(name = "mypost", httpMethod = HttpMethod.GET)
-	public CollectionResponse<Entity> mypost(@Named("name") String name, @Nullable @Named("next") String cursorString) {
-
+	@ApiMethod(name = "userPost", httpMethod = HttpMethod.GET)
+	public CollectionResponse<Entity> userPost(@Named("name") String name, @Nullable @Named("next") String cursorString) {
 	    Query q = new Query("Post").setFilter(new FilterPredicate("owner", FilterOperator.EQUAL, name));
-
 	    // https://cloud.google.com/appengine/docs/standard/python/datastore/projectionqueries#Indexes_for_projections
 	    //q.addProjection(new PropertyProjection("body", String.class));
 	    //q.addProjection(new PropertyProjection("date", java.util.Date.class));
 	    //q.addProjection(new PropertyProjection("likec", Integer.class));
 	    //q.addProjection(new PropertyProjection("url", String.class));
-
 	    // looks like a good idea but...
 	    // generate a DataStoreNeedIndexException -> 
 	    // require compositeIndex on owner + date
 	    // Explosion combinatoire.
 	    // q.addSort("date", SortDirection.DESCENDING);
-	    
 	    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	    PreparedQuery pq = datastore.prepare(q);
 	    
@@ -139,34 +135,10 @@ public class TinyGramEndPoint {
 	    
 	}
     
-	@ApiMethod(name = "getPost",httpMethod = ApiMethod.HttpMethod.GET)
-	public CollectionResponse<Entity> getPost(User user, @Nullable @Named("next") String cursorString)
-			throws UnauthorizedException {
-
-		if (user == null) {
-			throw new UnauthorizedException("Invalid credentials");
-		}
-        
-		Query q = new Query("Post").
-		    setFilter(new FilterPredicate("owner", FilterOperator.EQUAL, user.getEmail()));
-
-		// Multiple projection require a composite index
-		// owner is automatically projected...
-		// q.addProjection(new PropertyProjection("body", String.class));
-		// q.addProjection(new PropertyProjection("date", java.util.Date.class));
-		// q.addProjection(new PropertyProjection("likec", Integer.class));
-		// q.addProjection(new PropertyProjection("url", String.class));
-
-		// looks like a good idea but...
-		// require a composite index
-		// - kind: Post
-		//  properties:
-		//  - name: owner
-		//  - name: date
-		//    direction: desc
-
-		// q.addSort("date", SortDirection.DESCENDING);
-
+	@ApiMethod(name = "allPost",httpMethod = ApiMethod.HttpMethod.GET)
+	public CollectionResponse<Entity> allPost(@Nullable @Named("next") String cursorString)
+			throws UnauthorizedException {     
+		Query q = new Query("Post");
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		PreparedQuery pq = datastore.prepare(q);
 
