@@ -22,7 +22,6 @@
 <body>
     <script>
         var me;
-        var imageUser;
         function handleCredentialResponse(response) {
             console.log("callback called:"+response.credential)
             // decodeJwtResponse() is a custom function defined by you
@@ -44,7 +43,6 @@
 	            }).then(function(result){
 	        	    console.log("got:",result.properties.name);
                     me = response.credential;
-                    imageUser = jwt_decode(me).picture;
                     m.mount(document.body,PostForm)
 	            }).catch(function (e) {
                     console.log(e);
@@ -66,26 +64,18 @@
             }
         }
 
-        // for the example
-
  
         var PostForm = {
-            //oninit: PostForm.loadList,
             url:"",
             body:"",
-            myListIFollowThem: [],
-            /*     pas sur de ça, Gabriel tu dois creer la fonction qui recupere les gens qu'on follow, je l'ai appele getFollows mais tu fais ce que tu veux
-            loadList: function() {
-                return m.request({
-                    method: "GET",
-                    url: "_ah/api/myApi/v1/getFollows?access_token="+me})
-                .then(function(result) {
-                    console.log("got:",result)
-                    PostForm.myListIFollowThem=result.items
-                })
+            myListIFollowThem:[me,me,me,me,me,me,me,me,me,me,me], //l'enlever après tests
+            /*
+            oninit: function(){
+                myListIFollowThem[0] = me;
             },
             */
             view: function(){
+                //console.log("myListIFollowThem : " + jwt_decode(myListIFollowThem[0]).name);
                 return m("main",[
                     m('div', [
                         m('div',{class:'listMyPost'},"My Posts"),
@@ -97,19 +87,18 @@
                             ])
                         ])
                     ]),
-                    m('div',m("img",{"src":favicon.png})),
-                    m('div',{class:'blockImageUser'},m("img",{class:'imageUser'},{"src":imageUser})),
+                    m("img",{class:'imageUser',"src":jwt_decode(me).picture}),
                     m('div', {class:'blockListIFollowThem'}, [
-                        m('div',{class:'listIFollowThem'},"Followed Accounts"),
+                        m('div',{class:'titleListIFollowThem'},"Followed Accounts"),
                         m('table', {class:'tableFollowedAccounts'},[
                             m('tr', [
-                                m('th',{width:"50px"}, ""), // image
-                                m('th',{width:"150px"}, "") // name
+                                m('th',{class:'columnImageUserFollowed'}, ""),
+                                m('th',{class:'columnNameUserFollowed'}, "")
                             ]),
                             PostForm.myListIFollowThem.map(function(item) {
                                 return m("tr", [
-                                    m('td', m('label', jwt_decode(item).picture)),
-                                    m('td', m('label', jwt_decode(item).name)),
+                                    m('td', {class:'cellImageUserFollowed'}, m('img', {class:'imageUserFollowed','src':"favicon.png"})),
+                                    m('td', m('div', {class:"nameAccount"}, "ouais ouais ouais"))//jwt_decode(item).name
                                 ])
                             })
                         ])

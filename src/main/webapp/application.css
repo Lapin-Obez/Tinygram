@@ -1,42 +1,86 @@
-.blockImageUser
+.imageUser
 {
     position: fixed;
-    border-radius: 50%;
-    overflow: hidden;
-    width: 32px;
     height: 32px;
+    width: 32px;
+    border-radius: 50%;
     top: 10px;
     right: 20px;
 }
-/*
-.imageUser
+
+.imageUserFollowed
 {
     height: 32px;
     width: 32px;
-}
-*/
-.listMyPost
-{
-    color: rgb(32, 184, 58);
-    font-weight: bold;
+    border-radius: 50%;
 }
 
-.listIFollowThem
+.cellImageUserFollowed
 {
-    background-color: aquamarine;
+    padding-left: 9px; /* For center, because the image is 32x32 and the column size is 50px */
+    padding-top: 4px;
+}
+.listMyPost
+{
+    color: black;
+    font-weight: bold;
 }
 
 .blockListIFollowThem
 {
     position: fixed;
-    border: solid 2px black;
-    overflow: scroll;
-    height: 200px;
+    border: solid 2px rgb(119, 180, 230);
+    box-shadow: 10px 10px 10px lightblue;
+    height: 250px;
+    width: 250px;
     top: 200px;
-    right: 100px;
+    right: 50px;
+    overflow-y: scroll;
+    /* Hide scrollbar for : */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
-/* css from https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.css */
+/* Hide scrollbar for Chrome, Safari and Opera */
+.blockListIFollowThem::-webkit-scrollbar {
+    display: none;
+}
+
+.titleListIFollowThem
+{
+    background-color: rgb(119, 180, 230);
+    text-align: center;
+    position: fixed;
+    width: inherit;
+    height: 25px;
+    line-height: 25px; /* Basic solution to center verticaly */
+}
+
+.columnImageUserFollowed
+{
+    width: 50px;
+    overflow: hidden;
+    height: 25px; /* Else, the first row is hidden */
+}
+
+.columnNameUserFollowed
+{
+    width: 200px;
+    overflow: hidden;
+    text-align: center;
+    height: 25px; /* Else, the first row is hidden */
+}
+
+.nameAccount
+{
+    text-align: center;
+    display: inline-block; /* Else this two lines, the line before */
+    width: -moz-available; /* is useless  and the text will be not centered */
+    height: 40px;
+    line-height: 40px;
+}
+
+/* css from https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.css maybe useless at the moment
 .label {
     color: #363636;
     display: block;
@@ -351,3 +395,5 @@
 .textarea.has-fixed-size {
     resize: none;
 }
+
+*/
