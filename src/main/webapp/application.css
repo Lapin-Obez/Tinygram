@@ -58,11 +58,35 @@ body {
     /* and the column heigth is 40px */
     padding-top: 4px;
 }
-.listMyPost
-{
-    color: black;
-    font-weight: bold;
+
+.posting{
+    position: fixed;
+    border: solid 2px rgb(119, 180, 230);
+    box-shadow: 10px 10px 10px lightblue;
+    top: 35%;
+    left: 50px;
+    overflow-y: scroll;
+    /* Hide scrollbar for : */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
+
+.posting::-webkit-scrollbar {
+    display: none;
+}
+
+.postingTitle{
+    background-color: rgb(119, 180, 230);
+    text-align: center;
+    width: inherit;
+    font-weight: bold;
+    font-family: system-ui;
+}
+.field{
+    font-weight: bold;
+    font-family: system-ui;
+}
+
 
 .blockListIFollowThem
 {
@@ -90,6 +114,8 @@ body {
     text-align: center;
     position: fixed;
     width: inherit;
+    font-weight: bold;
+    font-family: system-ui;
     height: 25px;
     line-height: 25px; /* Basic solution to center verticaly */
 }
@@ -116,6 +142,8 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+
 
 /* css from https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.css maybe useless at the moment
 .label {

@@ -88,21 +88,13 @@
             
             view: function(){
                 return m("main",[
+                    //Création du header de la page de l'application
                     m('div',{class:'headPage'},[
                         m('div',{class:'nameApp'},"TinyGram"),                        
                         m("img",{class:'imageUser',"src":jwt_decode(myAccount.me).picture})
                     ]),
-
-                    m('div', [
-                        m('div',{class:'listMyPost'},"My Posts"),
-                        m('table', {class:'table is-striped'},[
-                            m('tr', [
-                            m('th', {width:"300px"}, "url"),
-                            m('th', {width:"100px"}, "body"),
-                            m('th',{class:"button"},"like")
-                            ])
-                        ])
-                    ]),
+                    
+                    //Code de la liste des comptes suivis
                     m('div', {class:'blockListIFollowThem'}, [
                         m('div',{class:'titleListIFollowThem'},"Followed Accounts"),
                         m('table', {class:'tableFollowedAccounts'},[
@@ -126,24 +118,26 @@
                             MyPost.postMessage()
                         }
                     }, 
-                    [
+
+                    //Code pour le bloc post message
+                    m('div', {class:'posting'}, [
+                        m('div', {class: 'postingTitle'}, "Post Message"),
                         m('div', {class:'field'},[
-                        m("label", {class:'label'},"URL"),
-                        m('div',{class:'control'}, m("input[type=text]", {
-                        class:'input is-rounded',
-                        placeholder:"Your url",
-                            oninput: function(e) {PostForm.url = e.target.value}})),
-        //		         m("img",{"src":this.url}),
+                            m("label", {class:'label'},"URL"),
+                            m('div',{class:'control'}, m("input[type=text]", {
+                            class:'input is-rounded',
+                            placeholder:"Your url",
+                                oninput: function(e) {PostForm.url = e.target.value}})),
                         ]),
                         m('div',{class:'field'},[
                             m("label", {class: 'label'},"Body"),
                             m('div',{class:'control'},m("input[type=textarea]", {
                             class:'textarea',
-                            placeholder:"your text",
+                            placeholder:"Your text",
                             oninput: function(e) { PostForm.body = e.target.value }})),
                         ]),
                         m('div',{class:'control'},m("button[type=submit]", {class:'button is-link'},"Post")),
-                    ])
+                    ]))
                 ])
             }
         }
@@ -198,6 +192,7 @@
                 }
         }
         
+        /*
         var PostView = {
         oninit: MyPost.loadList,
         view: function() {
@@ -233,7 +228,7 @@
                 ])
             ])
         }
-        }
+        }*/
 
         m.mount(document.body,LogPage)        
     </script>
