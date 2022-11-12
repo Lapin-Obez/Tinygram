@@ -11,9 +11,6 @@
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://unpkg.com/jwt-decode/build/jwt-decode.js"></script>
-<!--
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
--->
 <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 
 <script src="https://unpkg.com/mithril/mithril.js"></script>
@@ -21,7 +18,7 @@
 </head>
 <body>
     <script>
-        var me;
+        //var me;
         function handleCredentialResponse(response) {
             console.log("callback called:"+response.credential)
             // decodeJwtResponse() is a custom function defined by you
@@ -42,7 +39,7 @@
 	                url: "_ah/api/myApi/v1/addUser?access_token="+response.credential
 	            }).then(function(result){
 	        	    console.log("got:",result.properties.name);
-                    me = response.credential;
+                    myAccount.me = response.credential;
                     m.mount(document.body,PostForm)
 	            }).catch(function (e) {
                     console.log(e);
@@ -64,18 +61,32 @@
             }
         }
 
+        var myAccount = {
+            me: "",
+            myListIFollowThem: [],
+            loadListFollow: function() {
+                myAccount.myListIFollowThem[0] = myAccount.me;
+                /* replace getFollows by the good method created by Gabriel to access users we have followed
+                return m.request({
+                    method: "GET",
+                    url: "_ah/api/myApi/v1/getFollows?access_token="+myAccount.me
+                
+	        })
+	        .then(function(result) {
+	            Score.list = result.items
+	        	console.log("got:",result.items)
+	        	// m.redraw(true) 
+	        })
+            */
+	        }
+        }
  
         var PostForm = {
             url:"",
             body:"",
-            myListIFollowThem:[me,me,me,me,me,me,me,me,me,me,me], //l'enlever après tests
-            /*
-            oninit: function(){
-                myListIFollowThem[0] = me;
-            },
-            */
+            oninit: myAccount.loadListFollow,
+            
             view: function(){
-                //console.log("myListIFollowThem : " + jwt_decode(myListIFollowThem[0]).name);
                 return m("main",[
                     m('div', [
                         m('div',{class:'listMyPost'},"My Posts"),
@@ -87,7 +98,7 @@
                             ])
                         ])
                     ]),
-                    m("img",{class:'imageUser',"src":jwt_decode(me).picture}),
+                    m("img",{class:'imageUser',"src":jwt_decode(myAccount.me).picture}),
                     m('div', {class:'blockListIFollowThem'}, [
                         m('div',{class:'titleListIFollowThem'},"Followed Accounts"),
                         m('table', {class:'tableFollowedAccounts'},[
@@ -95,10 +106,10 @@
                                 m('th',{class:'columnImageUserFollowed'}, ""),
                                 m('th',{class:'columnNameUserFollowed'}, "")
                             ]),
-                            PostForm.myListIFollowThem.map(function(item) {
+                            myAccount.myListIFollowThem.map(function(item) {
                                 return m("tr", [
-                                    m('td', {class:'cellImageUserFollowed'}, m('img', {class:'imageUserFollowed','src':"favicon.png"})),
-                                    m('td', m('div', {class:"nameAccount"}, "ouais ouais ouais"))//jwt_decode(item).name
+                                    m('td', {class:'cellImageUserFollowed'}, m('img', {class:'imageUserFollowed','src':jwt_decode(item).picture})),
+                                    m('td', m('div', {class:"nameAccount"}, jwt_decode(item).name))
                                 ])
                             })
                         ])
@@ -140,7 +151,7 @@
                 loadList: function() {
                     return m.request({
                         method: "GET",
-                        url: "_ah/api/myApi/v1/getPost?access_token="+me})
+                        url: "_ah/api/myApi/v1/getPost?access_token="+myAccount.me})
                     .then(function(result) {
                         console.log("got:",result)
                         MyPost.list=result.items
@@ -153,7 +164,7 @@
                 next: function() {
                     return m.request({
                         method: "GET",
-                        url: "_ah/api/myApi/v1/mypost/"+me+"?next="+MyPost.nextToken})
+                        url: "_ah/api/myApi/v1/mypost/"+myAccount.me+"?next="+MyPost.nextToken})
                     .then(function(result) {
                         console.log("got:",result)
                         result.items.map(function(item){MyPost.list.push(item)})
@@ -169,8 +180,8 @@
                             'body':PostForm.body}
                     console.log("post:"+data)*/
                     return m.request({
-                        method: "GET",//"_ah/api/myApi/v1/postMessage?access_token="+me
-                        url: "_ah/api/myApi/v1/likeMessage/gabrielpouplin@gmail.com:9223370369274456451/?access_token="+me,
+                        method: "GET",//"_ah/api/myApi/v1/postMessage?access_token="+myAccount.me
+                        url: "_ah/api/myApi/v1/likeMessage/gabrielpouplin@gmail.com:9223370369274456451/?access_token="+myAccount.me,
                         //params : data,            
                     })
                     .then(function(result) {

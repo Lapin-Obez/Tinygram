@@ -17,7 +17,8 @@
 
 .cellImageUserFollowed
 {
-    padding-left: 9px; /* For center, because the image is 32x32 and the column size is 50px */
+    /* For center, because the image is 32x32 */
+    /* and the column heigth is 40px */
     padding-top: 4px;
 }
 .listMyPost
@@ -32,7 +33,7 @@
     border: solid 2px rgb(119, 180, 230);
     box-shadow: 10px 10px 10px lightblue;
     height: 250px;
-    width: 250px;
+    width: 200px;
     top: 200px;
     right: 50px;
     overflow-y: scroll;
@@ -58,26 +59,25 @@
 
 .columnImageUserFollowed
 {
-    width: 50px;
+    width: 32px;
     overflow: hidden;
-    height: 25px; /* Else, the first row is hidden */
+    height: 20px; /* Else, the first row is hidden */
 }
 
 .columnNameUserFollowed
 {
-    width: 200px;
+    width: 168px;
     overflow: hidden;
-    text-align: center;
-    height: 25px; /* Else, the first row is hidden */
+    /* height: 25px; Only one column have to define a height */
 }
 
 .nameAccount
 {
     text-align: center;
-    display: inline-block; /* Else this two lines, the line before */
-    width: -moz-available; /* is useless  and the text will be not centered */
     height: 40px;
     line-height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* css from https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.css maybe useless at the moment
