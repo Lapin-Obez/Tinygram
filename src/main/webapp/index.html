@@ -69,7 +69,7 @@
                 /* replace getFollows by the good method created by Gabriel to access users we have followed
                 return m.request({
                     method: "GET",
-                    url: "_ah/api/myApi/v1/getFollows?access_token="+myAccount.me
+                    url: "_ah/api/myApi/v1/myFollows?access_token="+myAccount.me
                 
 	        })
 	        .then(function(result) {
@@ -88,6 +88,11 @@
             
             view: function(){
                 return m("main",[
+                    m('div',{class:'headPage'},[
+                        m('div',{class:'nameApp'},"TinyGram"),                        
+                        m("img",{class:'imageUser',"src":jwt_decode(myAccount.me).picture})
+                    ]),
+
                     m('div', [
                         m('div',{class:'listMyPost'},"My Posts"),
                         m('table', {class:'table is-striped'},[
@@ -98,7 +103,6 @@
                             ])
                         ])
                     ]),
-                    m("img",{class:'imageUser',"src":jwt_decode(myAccount.me).picture}),
                     m('div', {class:'blockListIFollowThem'}, [
                         m('div',{class:'titleListIFollowThem'},"Followed Accounts"),
                         m('table', {class:'tableFollowedAccounts'},[
