@@ -41,7 +41,8 @@
 	            }).then(function(result){
 	        	    console.log("got:",result.properties.name);
                     me = response.credential;
-                    m.route.set("/tinygram");
+                    //m.route.set("/tinygram");
+                    m.mount(document.body,PostForm)
 	            }).catch(function (e) {
                     console.log(e);
                 })
@@ -71,7 +72,7 @@
            view: function(){
                return m("main",[
                         m('div', [
-                            m('div',{class:'subtitle'},"My Posts"),
+                            m('div',{class:'listMyPost'},"My Posts"),
                             m('table', {class:'table is-striped'},[
                                 m('tr', [
                             //  m("img",{"src":this.url}), pour les images à la place de juste mettre l'url peut être
@@ -148,7 +149,7 @@
               console.log("post:"+data)*/
               return m.request({
                   method: "GET",//"_ah/api/myApi/v1/postMessage?access_token="+me
-                  url: "_ah/api/myApi/v1/likeMessage/gabrielpouplin@gmail.com:9223370369274456451/?access_token="+me,
+                  url: "_ah/api/myApi/v1/userPost?name=gabrielpouplin@gmail.com?next=",
                   //params : data,            
               })
                .then(function(result) {
@@ -165,7 +166,7 @@
    oninit: MyPost.loadList,
    view: function() {
         return m('div', [
-       m('div',{class:'subtitle'},"My Posts"),
+       m('div',{class:'listMyPost'},"My Posts"),
        m('table', {class:'table is-striped',"table":"is-striped"},[
          m('tr', [
            m('th', {width:"50px"}, "like"),
@@ -198,12 +199,14 @@
    }
  }
 
-
+/* will disappear soon because m.mount works better
         m.route(document.body, "/logpage", {
             "/logpage": LogPage,
             "/tinygram": PostForm,
         })
-        m.redraw();        
+        m.redraw();
+*/
+        m.mount(document.body,LogPage)        
     </script>
 </body>
 </html>

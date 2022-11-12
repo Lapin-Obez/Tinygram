@@ -143,48 +143,48 @@
         }
  
  
-        var MyPost = {
-                list: [],
-                nextToken: "",
-                loadList: function() {
-                    return m.request({
-                        method: "GET",
-                        url: "_ah/api/myApi/v1/getPost?access_token="+myAccount.me})
-                    .then(function(result) {
-                        console.log("got:",result)
-                        MyPost.list=result.items
-                        if ('nextPageToken' in result) {
-                            MyPost.nextToken= result.nextPageToken
-                        } else {
-                            MyPost.nextToken=""
-                        }})
-                },
-                next: function() {
-                    return m.request({
-                        method: "GET",
-                        url: "_ah/api/myApi/v1/mypost/"+myAccount.me+"?next="+MyPost.nextToken})
-                    .then(function(result) {
-                        console.log("got:",result)
-                        result.items.map(function(item){MyPost.list.push(item)})
-                        if ('nextPageToken' in result) {
-                            MyPost.nextToken= result.nextPageToken
-                        } else {
-                            MyPost.nextToken=""
-                        }})
-                },
-                postMessage: function() {
-                    /* var data={
-                            'url':PostForm.url,
-                            'body':PostForm.body}
-                    console.log("post:"+data)*/
-                    return m.request({
-                        method: "GET",//"_ah/api/myApi/v1/postMessage?access_token="+myAccount.me
-                        url: "_ah/api/myApi/v1/likeMessage/gabrielpouplin@gmail.com:9223370369274456451/?access_token="+myAccount.me,
-                        //params : data,            
-                    })
-                    .then(function(result) {
-                            console.log("got:",result)
-                            
+ var MyPost = {
+         list: [],
+         nextToken: "",
+         loadList: function() {
+             return m.request({
+                 method: "GET",
+                 url: "_ah/api/myApi/v1/getPost?access_token="+me})
+             .then(function(result) {
+                 console.log("got:",result)
+                 MyPost.list=result.items
+                 if ('nextPageToken' in result) {
+                     MyPost.nextToken= result.nextPageToken
+                 } else {
+                     MyPost.nextToken=""
+                 }})
+         },
+         next: function() {
+             return m.request({
+                 method: "GET",
+                 url: "_ah/api/myApi/v1/mypost/"+me+"?next="+MyPost.nextToken})
+             .then(function(result) {
+                 console.log("got:",result)
+                 result.items.map(function(item){MyPost.list.push(item)})
+                 if ('nextPageToken' in result) {
+                     MyPost.nextToken= result.nextPageToken
+                 } else {
+                     MyPost.nextToken=""
+                 }})
+         },
+          postMessage: function() {
+             /* var data={
+                      'url':PostForm.url,
+                      'body':PostForm.body}
+              console.log("post:"+data)*/
+              return m.request({
+                  method: "GET",//"_ah/api/myApi/v1/postMessage?access_token="+me
+                  url: "_ah/api/myApi/v1/userPost?name=gabrielpouplin@gmail.com?next=",
+                  //params : data,            
+              })
+               .then(function(result) {
+                    console.log("got:",result)
+                    
 
                         }).catch(function (e) {
                             console.log(e);
