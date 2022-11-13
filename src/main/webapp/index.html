@@ -65,19 +65,15 @@
             me: "",
             myListIFollowThem: [],
             loadListFollow: function() {
-                myAccount.myListIFollowThem[0] = myAccount.me;
-                /* replace getFollows by the good method created by Gabriel to access users we have followed
                 return m.request({
                     method: "GET",
                     url: "_ah/api/myApi/v1/myFollows?access_token="+myAccount.me
-                
 	        })
 	        .then(function(result) {
-	            Score.list = result.items
+	            myAccount.myListIFollowThem = result.items
 	        	console.log("got:",result.items)
-	        	// m.redraw(true) 
 	        })
-            */
+            
 	        }
         }
  
@@ -90,7 +86,14 @@
                 return m("main",[
                     //Création du header de la page de l'application
                     m('div',{class:'headPage'},[
-                        m('div',{class:'nameApp'},"TinyGram"),                        
+                        m('div',{class:'nameApp'},"TinyGram"),  
+                        m('div', {class:'searchBar'},[
+                            m("img",{class:'searchImage',"src":"search.png"}),
+                            m('div',{class:'control'}, m("input[type=text]", {
+                                class:'searchInput',
+                                placeholder:"search account",
+                                oninput: function(e) {/*Do nothing for now*/}})),
+                        ]),                      
                         m("img",{class:'imageUser',"src":jwt_decode(myAccount.me).picture})
                     ]),
                     
