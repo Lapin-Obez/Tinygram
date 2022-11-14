@@ -88,11 +88,12 @@
                     m('div',{class:'headPage'},[
                         m('div',{class:'nameApp'},"TinyGram"),  
                         m('div', {class:'searchBar'},[
-                            m("img",{class:'searchImage',"src":"search.png"}),
-                            m('div',{class:'control'}, m("input[type=text]", {
+                            m("button",{class:'buttonSearchBar'},m("img",{class:'searchImage',"src":"search.png"})),
+                            m("input[type=text]", {
                                 class:'searchInput',
                                 placeholder:"search account",
-                                oninput: function(e) {/*Do nothing for now*/}})),
+                                oninput: function(e) {/*Do nothing for now*/}
+                            }),
                         ]),                      
                         m("img",{class:'imageUser',"src":jwt_decode(myAccount.me).picture})
                     ]),
