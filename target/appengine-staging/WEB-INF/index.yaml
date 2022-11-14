@@ -1,5 +1,0 @@
-indexes:
-- kind: User
-  properties:
-    - name: date
-      direction: desc
