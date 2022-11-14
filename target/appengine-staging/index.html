@@ -11,7 +11,6 @@
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://unpkg.com/jwt-decode/build/jwt-decode.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
 <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 
 <script src="https://unpkg.com/mithril/mithril.js"></script>
@@ -19,7 +18,7 @@
 </head>
 <body>
     <script>
-        var me;
+        //var me;
         function handleCredentialResponse(response) {
             console.log("callback called:"+response.credential)
             // decodeJwtResponse() is a custom function defined by you
@@ -40,8 +39,7 @@
 	                url: "_ah/api/myApi/v1/addUser?access_token="+response.credential
 	            }).then(function(result){
 	        	    console.log("got:",result.properties.name);
-                    me = response.credential;
-                    //m.route.set("/tinygram");
+                    myAccount.me = response.credential;
                     m.mount(document.body,PostForm)
 	            }).catch(function (e) {
                     console.log(e);
@@ -52,65 +50,100 @@
 
         var LogPage = {
             view: function() {
-                return m("a", {
-                    href: "#!/tinygram"
-                }, m('div',{
+                return m("a", [
+                    m('div',{
                         id: 'g_id_onload',
                         'data-client_id': '622187817241-fqke0l023q148lc21gv1qthq82imi4mg.apps.googleusercontent.com',
                         'data-callback':"handleCredentialResponse" ,
                     }),
-                    m('div',{class:'g_id_signin', 'data-type':'standard'}))
+                    m('div',{class:'g_id_signin', 'data-type':'standard'})
+                ])
             }
         }
 
-        // for the example
-
+        var myAccount = {
+            me: "",
+            myListIFollowThem: [],
+            loadListFollow: function() {
+                return m.request({
+                    method: "GET",
+                    url: "_ah/api/myApi/v1/myFollows?access_token="+myAccount.me
+	        })
+	        .then(function(result) {
+	            myAccount.myListIFollowThem = result.items
+	        	console.log("got:",result.items)
+	        })
+            
+	        }
+        }
  
- var PostForm = {
-         url:"",
-         body:"",
-           view: function(){
-               return m("main",[
-                        m('div', [
-                            m('div',{class:'listMyPost'},"My Posts"),
-                            m('table', {class:'table is-striped'},[
-                                m('tr', [
-                            //  m("img",{"src":this.url}), pour les images à la place de juste mettre l'url peut être
-                                m('th', {width:"300px"}, "url"),
-                                m('th', {width:"100px"}, "body"),
-                                m('th',{class:"button"},"like")
+        var PostForm = {
+            url:"",
+            body:"",
+            oninit: myAccount.loadListFollow,
+            
+            view: function(){
+                return m("main",[
+                    //Création du header de la page de l'application
+                    m('div',{class:'headPage'},[
+                        m('div',{class:'nameApp'},"TinyGram"),  
+                        m('div', {class:'searchBar'},[
+                            m("img",{class:'searchImage',"src":"search.png"}),
+                            m('div',{class:'control'}, m("input[type=text]", {
+                                class:'searchInput',
+                                placeholder:"search account",
+                                oninput: function(e) {/*Do nothing for now*/}})),
+                        ]),                      
+                        m("img",{class:'imageUser',"src":jwt_decode(myAccount.me).picture})
+                    ]),
+                    
+                    //Code de la liste des comptes suivis
+                    m('div', {class:'blockListIFollowThem'}, [
+                        m('div',{class:'titleListIFollowThem'},"Followed Accounts"),
+                        m('table', {class:'tableFollowedAccounts'},[
+                            m('tr', [
+                                m('th',{class:'columnImageUserFollowed'}, ""),
+                                m('th',{class:'columnNameUserFollowed'}, "")
+                            ]),
+                            myAccount.myListIFollowThem.map(function(item) {
+                                return m("tr", [
+                                    m('td', {class:'cellImageUserFollowed'}, m('img', {class:'imageUserFollowed','src':jwt_decode(item).picture})),
+                                    m('td', m('div', {class:"nameAccount"}, jwt_decode(item).name))
                                 ])
-                            ])
-                        ]),
-                    m('div',{class:'imageUser'},m("img",{"src":jwt_decode(me).picture})),
+                            })
+                        ])
+                    ]),
                     m("form", {
-                    onsubmit: function(e) {
-                        e.preventDefault()
-                        if (url="") {url="https://dummyimage.com/320x200/000/fff&text="+Date.now()} 
-                        if (body="") {body="bla bla bla \n"+Date.now()}
-                        MyPost.postMessage()
-                    }}, 
-                    [
+                        onsubmit: function(e) {
+                            e.preventDefault()
+                            if (url="") {url="https://dummyimage.com/320x200/000/fff&text="+Date.now()} 
+                            if (body="") {body="bla bla bla \n"+Date.now()}
+                            MyPost.postMessage()
+                        }
+                    }, 
+
+                    //Code pour le bloc post message
+                    m('div', {class:'posting'}, [
+                        m('div', {class: 'postingTitle'}, "Post Message"),
                         m('div', {class:'field'},[
-                        m("label", {class:'label'},"URL"),
-                        m('div',{class:'control'}, m("input[type=text]", {
-                        class:'input is-rounded',
-                        placeholder:"Your url",
-                            oninput: function(e) {PostForm.url = e.target.value}})),
-        //		         m("img",{"src":this.url}),
+                            m("label", {class:'label'},"URL"),
+                            m('div',{class:'control'}, m("input[type=text]", {
+                            class:'input is-rounded',
+                            placeholder:"Your url",
+                                oninput: function(e) {PostForm.url = e.target.value}})),
                         ]),
-                    m('div',{class:'field'},[
-                        m("label", {class: 'label'},"Body"),
-                        m('div',{class:'control'},m("input[type=textarea]", {
-                        class:'textarea',
-                        placeholder:"your text",
-                        oninput: function(e) { PostForm.body = e.target.value }})),
+                        m('div',{class:'field'},[
+                            m("label", {class: 'label'},"Body"),
+                            m('div',{class:'control'},m("input[type=textarea]", {
+                            class:'textarea',
+                            placeholder:"Your text",
+                            oninput: function(e) { PostForm.body = e.target.value }})),
                         ]),
-                    m('div',{class:'control'},m("button[type=submit]", {class:'button is-link'},"Post")),
-                    ])
-               ])
-           }
-         }
+                        m('div',{class:'control'},m("button[type=submit]", {class:'button is-link'},"Post")),
+                    ]))
+                ])
+            }
+        }
  
  
  var MyPost = {
@@ -156,56 +189,50 @@
                     console.log("got:",result)
                     
 
-                }).catch(function (e) {
-                    console.log(e);
-                })
-          }
- }
- 
- var PostView = {
-   oninit: MyPost.loadList,
-   view: function() {
-        return m('div', [
-       m('div',{class:'listMyPost'},"My Posts"),
-       m('table', {class:'table is-striped',"table":"is-striped"},[
-         m('tr', [
-           m('th', {width:"50px"}, "like"),
-           m('th', {width:"50px"}, "del"),
-           m('th', {width:"50px"}, "Bodys"),
-           m('th', {width:"50px"}, "Urls"),
-           m('th', {width:"50px"}, "Like"),
-         ]),
-         MyPost.list.map(function(item) {
-           return m("tr", [
-             m("td", m("button", {onclick: function(e) {
-                 console.log("like:"+item.key.id)
-                  }},"like")),
-                  m("td", m("button", {onclick: function(e) {
-                      console.log("del:"+item.key.id)
-                  }},"del")),
-             m('td', m('label', item.properties.body)),
-             m('td', m('img', {class: 'is-rounded', 'src': item.properties.url})),
-             m('td', m('label', item.properties.likec)),
-           ])
-         }),
- //	    m("div", isError ? "An error occurred" : "Saved"),
-         m('button',{
-               class: 'button is-link',
-               onclick: function(e) {MyPost.next()}
-               },
-           "Next"),
-        ])
-      ])
-   }
- }
+                        }).catch(function (e) {
+                            console.log(e);
+                        })
+                }
+        }
+        
+        /*
+        var PostView = {
+        oninit: MyPost.loadList,
+        view: function() {
+                return m('div', [
+            m('div',{class:'listMyPost'},"My Posts"),
+            m('table', {class:'table is-striped',"table":"is-striped"},[
+                m('tr', [
+                m('th', {width:"50px"}, "like"),
+                m('th', {width:"50px"}, "del"),
+                m('th', {width:"50px"}, "Bodys"),
+                m('th', {width:"50px"}, "Urls"),
+                m('th', {width:"50px"}, "Like"),
+                ]),
+                MyPost.list.map(function(item) {
+                return m("tr", [
+                    m("td", m("button", {onclick: function(e) {
+                        console.log("like:"+item.key.id)
+                        }},"like")),
+                        m("td", m("button", {onclick: function(e) {
+                            console.log("del:"+item.key.id)
+                        }},"del")),
+                    m('td', m('label', item.properties.body)),
+                    m('td', m('img', {class: 'is-rounded', 'src': item.properties.url})),
+                    m('td', m('label', item.properties.likec)),
+                ])
+                }),
+        //	    m("div", isError ? "An error occurred" : "Saved"),
+                m('button',{
+                    class: 'button is-link',
+                    onclick: function(e) {MyPost.next()}
+                    },
+                "Next"),
+                ])
+            ])
+        }
+        }*/
 
-/* will disappear soon because m.mount works better
-        m.route(document.body, "/logpage", {
-            "/logpage": LogPage,
-            "/tinygram": PostForm,
-        })
-        m.redraw();
-*/
         m.mount(document.body,LogPage)        
     </script>
 </body>

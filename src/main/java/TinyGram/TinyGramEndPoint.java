@@ -183,6 +183,7 @@ public class TinyGramEndPoint {
 		return e;
 	}
 
+    //Notre gestion des likes ne scale pas mais elle est fonctionnelle.
     @ApiMethod(name = "likeMessage", httpMethod = HttpMethod.GET)
     public Entity likeMessage(@Named("idMessage")String idMessage,User user)throws UnauthorizedException, Exception {
         if (user == null) {
@@ -197,12 +198,13 @@ public class TinyGramEndPoint {
         Entity e = pq.asSingleEntity();
         //log.info("ENTITY" +e.toString());
         //Si on récupère plusieurs entity y a un problème wala
-        if(e == null) throw new UnauthorizedException("Plusieurs messages ont le même ID, ACHTUNG !!!!!");
+        if(e == null) throw new UnauthorizedException("Mehrere Nachrichten auf derselben ID, ACHTUNG !!!!!");
+
         try {
             List<String> l = (List<String>)e.getProperty("likeU");
             //Query qtest = new Query("Post").setFilter(new FilterPredicate("__key__",FilterOperator.EQUAL,idMessageKey)).setFilter(new FilterPredicate("likeU",FilterOperator.EQUAL,user.getEmail()));
             if (l.contains(user.getEmail())){
-                throw new UnauthorizedException("Vous avez déjà like ce post : -> tocard (de toute façon seul un margoulin peut aller lire ce message)");
+                throw new UnauthorizedException("Vous avez déjà like ce post (de toute façon seul un margoulin peut aller lire ce message)");
             }
             l.add(user.getEmail());
             e.setProperty("likeU",l);

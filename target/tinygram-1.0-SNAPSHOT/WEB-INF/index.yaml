@@ -1,6 +1,0 @@
-handlers:
-  - url: /application.css
-  static_files: application.css
-  upload: application.css
-
-indexes:
