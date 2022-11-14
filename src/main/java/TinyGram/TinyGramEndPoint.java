@@ -45,7 +45,7 @@ public class TinyGramEndPoint {
     Random r = new Random();
 
     @ApiMethod(name = "addUser", httpMethod = HttpMethod.GET)
-	public Entity addUser(User user) throws UnauthorizedException {
+	public Entity addUser(@Named("urlPhoto")String urlPhoto,User user) throws UnauthorizedException {
 
 		if (user == null) {
 			throw new UnauthorizedException("Invalid credentials");
@@ -57,6 +57,7 @@ public class TinyGramEndPoint {
         List l =new LinkedList<String>();
         l.add("MrCool");
         e.setProperty("iFollowThem", l);
+        e.setProperty("photo", urlPhoto);
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		datastore.put(e);
 
