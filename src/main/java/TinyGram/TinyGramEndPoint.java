@@ -86,7 +86,7 @@ public class TinyGramEndPoint {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	    PreparedQuery pq = datastore.prepare(q);
         Entity e = pq.asSingleEntity();
-        if(e == null) throw new UnauthorizedException("Plusieurs Users on la même adresse mail");
+        if(e == null) throw new UnauthorizedException("Plusieurs Users on la même adresse mail ou l'adresse mail est inexistante");
         Object o = e.getProperty("photo");
 	    return  o;
 	}

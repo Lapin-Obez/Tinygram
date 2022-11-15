@@ -1,6 +1,17 @@
+Membres du groupe : 
+    - Mathis EMERIAU
+    - Tristan RAME
+    - Gabriel POUPLIN
+
 L'objectif de ce projet était de produire une version très simplifié de Instagram afin de comprendre comment fonctionne les réseaux sociaux.
 
 On devait ainsi réutiliser les compétences étudiées en cours de Web & Cloud and Datastores par monsieur Pascal Molli.
+
+Lien du github : https://gitlab.univ-nantes.fr/E193433D/tinygram.git
+
+Lien du site : https://tinygram-365116.ew.r.appspot.com/
+
+Lien du service REST : https://tinygram-365116.ew.r.appspot.com/_ah/api/myApi/v1/
 
 Voici les captures de nos kinds : 
 
