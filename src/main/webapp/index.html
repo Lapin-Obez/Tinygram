@@ -85,7 +85,7 @@
                     // le paramètre n'est pas obligatoire pour que la méthode s'exécute
                 })
                 .then(function(result) {
-                    myAccount.timeline = result
+                    myAccount.timeline = result.items
                     console.log("got timeline :"+myAccount.timeline)
                 })
             }
