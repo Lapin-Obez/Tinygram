@@ -78,7 +78,7 @@ public class TinyGramEndPoint {
 	}
 
     @ApiMethod(name = "myPicture", httpMethod = HttpMethod.GET)
-	public Entity myPicture(@Named("mailUser")String mailUser) throws UnauthorizedException {
+	public Object myPicture(@Named("mailUser")String mailUser) throws UnauthorizedException {
 		if (mailUser == null) {
 			throw new UnauthorizedException("Invalid credentials");
 		}
@@ -87,7 +87,8 @@ public class TinyGramEndPoint {
 	    PreparedQuery pq = datastore.prepare(q);
         Entity e = pq.asSingleEntity();
         if(e == null) throw new UnauthorizedException("Plusieurs Users on la même adresse mail");
-	    return  e;
+        Object o = e.getProperty("photo");
+	    return  o;
 	}
 
     @ApiMethod(name = "followSomeone", httpMethod = HttpMethod.GET)
