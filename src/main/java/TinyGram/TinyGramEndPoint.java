@@ -88,7 +88,7 @@ public class TinyGramEndPoint {
         Entity e = pq.asSingleEntity();
         if(e == null) throw new UnauthorizedException("Plusieurs Users on la même adresse mail ou l'adresse mail est inexistante");
         Object o = e.getProperty("photo");
-	    return  o;
+	    return o;
 	}
 
     @ApiMethod(name = "followSomeone", httpMethod = HttpMethod.GET)

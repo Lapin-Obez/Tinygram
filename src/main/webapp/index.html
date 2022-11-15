@@ -65,7 +65,7 @@
         var myAccount = {
             me: "",
             myListIFollowThem: [],
-            timeline : [], // Liste de tous les posts renvoyés par le backend avec allPost (les 2 plus récents pour le moment)
+            timeline: [], // Liste de tous les posts renvoyés par le backend avec allPost (les 2 plus récents pour le moment)
             
             loadListFollow: function() {
                 return m.request({
@@ -77,7 +77,7 @@
                     console.log("got list follows:",result.items)
                 })
             },
-
+            
             loadTimeline: function() {
                 return m.request({
                     method: "GET",
@@ -85,8 +85,8 @@
                     // le paramètre n'est pas obligatoire pour que la méthode s'exécute
                 })
                 .then(function(result) {
-                    myAccount.timeline = result.items
-                    console.log("got timeline")
+                    myAccount.timeline = result
+                    console.log("got timeline :"+myAccount.timeline)
                 })
             }
         }
@@ -94,9 +94,11 @@
         var PostForm = {
             url:"",
             body:"",
-            oninit: myAccount.loadListFollow,
-            oninit: myAccount.loadTimeline,
-            
+            oninit: function(){
+                myAccount.loadListFollow();
+                myAccount.loadTimeline();
+            },
+
             view: function(){
                 return m("main",[
                     //Création du header de la page de l'application
@@ -117,7 +119,7 @@
                     // pour l'instant, on en prend que 2
                     m('div', {class:'blockDisplayPosts'}, 
                         myAccount.timeline.map(function(item){
-                            return m('div',{class:'aPost'})
+                            return m('div',{class:'aPost'},"coucou")
                         })
                     ),
 
