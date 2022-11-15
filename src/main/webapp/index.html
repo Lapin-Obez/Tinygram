@@ -35,8 +35,9 @@
             fetch(url).then(response => response.text()).then(data => )*/
             if(responsePayload != null){
                 m.request({
-	                method: "GET",
-	                url: "_ah/api/myApi/v1/addUser?access_token="+response.credential
+	                method: "POST",
+	                url: "_ah/api/myApi/v1/addUser?access_token="+response.credential,
+                    params: {urlPhoto:responsePayload.picture}
 	            }).then(function(result){
 	        	    console.log("got:",result.properties.name);
                     myAccount.me = response.credential;
@@ -64,23 +65,37 @@
         var myAccount = {
             me: "",
             myListIFollowThem: [],
+            timeline : [], // Liste de tous les posts renvoyés par le backend avec allPost (les 2 plus récents pour le moment)
+            
             loadListFollow: function() {
                 return m.request({
                     method: "GET",
                     url: "_ah/api/myApi/v1/myFollows?access_token="+myAccount.me
-	        })
-	        .then(function(result) {
-	            myAccount.myListIFollowThem = result.items
-	        	console.log("got:",result.items)
-	        })
-            
-	        }
+                })
+                .then(function(result) {
+                    myAccount.myListIFollowThem = result.items
+                    console.log("got list follows:",result.items)
+                })
+            },
+
+            loadTimeline: function() {
+                return m.request({
+                    method: "GET",
+                    url: "_ah/api/myApi/v1/allPost"
+                    // le paramètre n'est pas obligatoire pour que la méthode s'exécute
+                })
+                .then(function(result) {
+                    myAccount.timeline = result.items
+                    console.log("got timeline")
+                })
+            }
         }
  
         var PostForm = {
             url:"",
             body:"",
             oninit: myAccount.loadListFollow,
+            oninit: myAccount.loadTimeline,
             
             view: function(){
                 return m("main",[
@@ -98,6 +113,14 @@
                         m("img",{class:'imageUser',"src":jwt_decode(myAccount.me).picture})
                     ]),
                     
+                    //Code de l'affichage des posts du plus récent au plus vieux du datastore
+                    // pour l'instant, on en prend que 2
+                    m('div', {class:'blockDisplayPosts'}, 
+                        myAccount.timeline.map(function(item){
+                            return m('div',{class:'aPost'})
+                        })
+                    ),
+
                     //Code de la liste des comptes suivis
                     m('div', {class:'blockListIFollowThem'}, [
                         m('div',{class:'titleListIFollowThem'},"Followed Accounts"),
@@ -108,8 +131,8 @@
                             ]),
                             myAccount.myListIFollowThem.map(function(item) {
                                 return m("tr", [
-                                    m('td', {class:'cellImageUserFollowed'}, m('img', {class:'imageUserFollowed','src':jwt_decode(item).picture})),
-                                    m('td', m('div', {class:"nameAccount"}, jwt_decode(item).name))
+                                    m('td', {class:'cellImageUserFollowed'}, m('img', {class:'imageUserFollowed','src':"defaultImageUser.png"})),
+                                    m('td', m('div', {class:"nameAccount"}, item))
                                 ])
                             })
                         ])

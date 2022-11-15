@@ -44,8 +44,8 @@ public class TinyGramEndPoint {
     private static final Logger log = Logger.getLogger(TinyGramEndPoint.class.getName());
     Random r = new Random();
 
-    @ApiMethod(name = "addUser", httpMethod = HttpMethod.GET)
-	public Entity addUser(@Named("urlPhoto")String urlPhoto,User user) throws UnauthorizedException {
+    @ApiMethod(name = "addUser", httpMethod = HttpMethod.POST)
+	public Entity addUser(@Nullable @Named("urlPhoto")String urlPhoto,User user) throws UnauthorizedException {
 
 		if (user == null) {
 			throw new UnauthorizedException("Invalid credentials");
@@ -78,7 +78,7 @@ public class TinyGramEndPoint {
 	}
 
     @ApiMethod(name = "myPicture", httpMethod = HttpMethod.GET)
-	public String myPicture(@Named("mailUser")String mailUser) throws UnauthorizedException {
+	public Entity myPicture(@Named("mailUser")String mailUser) throws UnauthorizedException {
 		if (mailUser == null) {
 			throw new UnauthorizedException("Invalid credentials");
 		}
@@ -87,8 +87,7 @@ public class TinyGramEndPoint {
 	    PreparedQuery pq = datastore.prepare(q);
         Entity e = pq.asSingleEntity();
         if(e == null) throw new UnauthorizedException("Plusieurs Users on la même adresse mail");
-        String l = (String)e.getProperty("photo");
-	    return  l;
+	    return  e;
 	}
 
     @ApiMethod(name = "followSomeone", httpMethod = HttpMethod.GET)
@@ -121,6 +120,7 @@ public class TinyGramEndPoint {
         return e;
     }
 
+    //Renvoie les post d'un user passé en paramètre
 	@ApiMethod(name = "userPost", httpMethod = HttpMethod.GET)
 	public CollectionResponse<Entity> userPost(@Named("name") String name, @Nullable @Named("next") String cursorString) {
 	    Query q = new Query("Post").setFilter(new FilterPredicate("owner", FilterOperator.EQUAL, name));
