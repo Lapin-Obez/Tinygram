@@ -1,0 +1,35 @@
+L'objectif de ce projet était de produire une version très simplifié de Instagram afin de comprendre comment fonctionne les réseaux sociaux.
+
+On devait ainsi réutiliser les compétences étudiées en cours de Web & Cloud and Datastores par monsieur Pascal Molli.
+
+Voici les captures de nos kinds : 
+
+Capture des post des messages :
+
+image::CapturePost.png[]
+
+La colonne ID : l'identifiant du message est composé du nom de l'auteur suivi de la date du post
+
+La colonne body : Le corps du message, il s'agit de texte.
+
+date : La date du message.
+
+likeU : La liste des personnes qui ont like le message. Elle contient le mail des gens qui ont liké.
+
+likec : un entier qui comptabilise le nombre de like.
+
+owner : Le mail de l'auteur du post.
+
+url : l'URL de la photo qui a été posté par l'utilisateur.
+
+Capture des Users : 
+
+image::CaptureUser.png[]
+
+ID : l'identifiant du Users
+
+iFollowThem : La liste des gens qu'un User suit.
+
+name : Le mail d'un User.
+
+photo : l'url de la photo de profile google d'un User.
