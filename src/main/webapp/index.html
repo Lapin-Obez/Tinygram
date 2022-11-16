@@ -119,6 +119,11 @@
                     // pour l'instant, on en prend que 2
                     m('div', {class:'blockDisplayPosts'}, 
                         myAccount.timeline.map(function(item){
+                            //console.log("un : "+ item.owner); nope
+                            //console.log("deux : "+ item.get("owner")); nope
+                            console.log("type item : "+ (typeof item));
+                            //console.log("trois : "+ item['owner']); nope
+                            //console.log("quatre : "+ item("owner")); nope
                             return m('div',{class:'blockOnePost'}, [
                                 m('div',{class:'headPost'}, [
                                     m('div',{class:'nameOwnerAndDatePost'}, [
