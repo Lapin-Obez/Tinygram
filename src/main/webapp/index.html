@@ -119,23 +119,21 @@
                     // pour l'instant, on en prend que 2
                     m('div', {class:'blockDisplayPosts'}, 
                         myAccount.timeline.map(function(item){
-                            //console.log("un : "+ item.owner); nope
-                            //console.log("deux : "+ item.get("owner")); nope
-                            console.log("type item : "+ (typeof item));
-                            //console.log("trois : "+ item['owner']); nope
-                            //console.log("quatre : "+ item("owner")); nope
+                            // les champs de l'objet sont dans le champ properties
                             return m('div',{class:'blockOnePost'}, [
                                 m('div',{class:'headPost'}, [
                                     m('div',{class:'nameOwnerAndDatePost'}, [
-                                        m('div',{class:'nameOwnerPost'},"coucou pouet"), //item.owner
-                                        m('div',{class:'datePost'},"salut les amis !") // item.date
+                                        m('div',{class:'nameOwnerPost'},item.properties.owner),
+                                        m('div',{class:'datePost'},item.properties.date)
                                     ]),
                                     m('button',{class:'buttonLike'},
                                         m('img', {class:'imageLike','src':"emptyHeart.png"})),
                                     m('button',{class:'buttonFollow'},"Follow")
                                 ]),
-                                m('img', {class:'imagePost','src':"defaultImageUser.png"}), //item.url
-                                m('p', {class:'bodyPost'}, "ziejndzieudnzied") //item.body
+                                m('div',{class:'blockImagePost'}, // Useful to center the image
+                                    m('img', {class:'imagePost','src':item.properties.url})
+                                ),
+                                m('p', {class:'bodyPost'}, item.properties.body)
                                 
                             ])
                         })

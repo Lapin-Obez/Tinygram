@@ -145,10 +145,15 @@ body {
     margin: 5px 10px;
 }
 
+.blockImagePost {
+    display: flex;
+    justify-content: center;
+    width: auto;
+    height: auto;
+}
+
 .imagePost {
-    margin: 5px;
-    width: 512px;
-    height: 256px;
+    max-width: 512px;
 }
 
 .bodyPost {
