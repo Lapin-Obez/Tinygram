@@ -85,7 +85,7 @@
                     // le paramètre n'est pas obligatoire pour que la méthode s'exécute
                 })
                 .then(function(result) {
-                    myAccount.timeline = result.items
+                    myAccount.timeline = result.items //marche pas en run nik
                     console.log("got timeline :"+myAccount.timeline)
                 })
             }
@@ -119,7 +119,20 @@
                     // pour l'instant, on en prend que 2
                     m('div', {class:'blockDisplayPosts'}, 
                         myAccount.timeline.map(function(item){
-                            return m('div',{class:'aPost'},"coucou")
+                            return m('div',{class:'blockOnePost'}, [
+                                m('div',{class:'headPost'}, [
+                                    m('div',{class:'nameOwnerAndDatePost'}, [
+                                        m('div',{class:'nameOwnerPost'},"coucou pouet"), //item.owner
+                                        m('div',{class:'datePost'},"salut les amis !") // item.date
+                                    ]),
+                                    m('button',{class:'buttonLike'},
+                                        m('img', {class:'imageLike','src':"emptyHeart.png"})),
+                                    m('button',{class:'buttonFollow'},"Follow")
+                                ]),
+                                m('img', {class:'imagePost','src':"defaultImageUser.png"}), //item.url
+                                m('p', {class:'bodyPost'}, "ziejndzieudnzied") //item.body
+                                
+                            ])
                         })
                     ),
 
