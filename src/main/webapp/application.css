@@ -125,12 +125,14 @@ body {
     width: 50px;
     height: auto;
     background-color: white;
+    border-color: #40ffbf;
+    box-shadow: 3px 3px 10px lightblue;
     border-radius: 5px;
     margin: 5px 10px;
 }
 
 .buttonLike:active{
-    background-color: rgb(255, 50, 67);
+    background-color: #40ffbf;
 }
 
 .imageLike {
@@ -144,12 +146,14 @@ body {
     width: 50px;
     height: auto;
     background-color: white;
+    border-color: #40ffbf;
+    box-shadow: 3px 3px 10px lightblue;
     border-radius: 5px;
     margin: 5px 10px;
 }
 
 .buttonFollow:active{
-    background-color: rgb(41, 245, 160);
+    background-color: #40ffbf;
 }
 
 .blockImagePost {

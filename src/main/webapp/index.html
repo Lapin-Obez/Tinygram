@@ -120,7 +120,7 @@
                             return m('div',{class:'blockOnePost'}, [
                                 m('div',{class:'headPost'}, [
                                     m('div',{class:'nameOwnerAndDatePost'}, [ // les champs de l'objet sont dans le champ properties
-                                        m('div',{class:'nameOwnerPost'},item.properties.owner),
+                                        m('div',{class:'nameOwnerPost'},item.properties.owner.split('@')[0]), // We take the name before the @
                                         m('div',{class:'datePost'},item.properties.date)
                                     ]),
                                     m('button',{class:'buttonLike', 
