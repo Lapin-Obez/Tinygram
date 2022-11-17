@@ -109,15 +109,16 @@ body {
 }
 
 .nameOwnerPost {
-    height: 25px;
+    height: 50%;
     width: inherit;
     font-weight: bold;
     font-family: system-ui;
+    font-size: large;
 }
 
 .datePost {
-    height: 25px;
     width: inherit;
+    font-size: x-small;
 }
 
 .buttonLike {
@@ -126,6 +127,10 @@ body {
     background-color: white;
     border-radius: 5px;
     margin: 5px 10px;
+}
+
+.buttonLike:active{
+    background-color: rgb(255, 50, 67);
 }
 
 .imageLike {
@@ -140,8 +145,11 @@ body {
     height: auto;
     background-color: white;
     border-radius: 5px;
-    cursor: not-allowed; /* Because it does nothing for now */
     margin: 5px 10px;
+}
+
+.buttonFollow:active{
+    background-color: rgb(41, 245, 160);
 }
 
 .blockImagePost {

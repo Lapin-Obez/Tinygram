@@ -131,7 +131,26 @@
                                                     }).then(function(result) {console.log("bonsoir c'est like")})
                                                 }},
                                         m('img', {class:'imageLike','src':"emptyHeart.png"})),
-                                    m('button',{class:'buttonFollow'},"Follow")
+                                    m('button',{class:'buttonFollow',
+                                                onclick:function(){
+                                                    return m.request({
+                                                        method: "GET",
+                                                        url: "_ah/api/myApi/v1/followSomeone/"+ item.properties.owner +"/?access_token="+ myAccount.me
+                                                    }).then(function(result) {
+                                                        /* the object result is weird
+                                                        // With that, we don't have to request again to get the entire list
+                                                        if(!myAccount.myListIFollowThem.includes(result)){
+                                                            myAccount.myListIFollowThem.push(result)
+                                                        }
+                                                        console.log("result : " + result)
+                                                        for(let i in result){
+                                                            console.log("i : "+ i + " result.i : "+ result.i)
+                                                        }
+                                                        m.redraw()
+                                                        */
+                                                        console.log("bonjour c'est follow")
+                                                    })
+                                                }},"Follow")
                                 ]),
                                 m('div',{class:'blockImagePost'}, // Useful to center the image
                                     m('img', {class:'imagePost','src':item.properties.url})
