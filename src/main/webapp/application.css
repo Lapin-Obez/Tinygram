@@ -125,7 +125,6 @@ body {
     height: auto;
     background-color: white;
     border-radius: 5px;
-    cursor: not-allowed; /* Because it does nothing for now */
     margin: 5px 10px;
 }
 
