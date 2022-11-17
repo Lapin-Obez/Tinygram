@@ -100,7 +100,7 @@ body {
     position: relative;
     display: flex;
     height: 50px;
-    width: -moz-available;
+    width: auto;
 }
 
 .nameOwnerAndDatePost {
