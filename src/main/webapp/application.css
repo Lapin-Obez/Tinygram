@@ -184,10 +184,13 @@ body {
 
 .posting {
     position: fixed;
-    background-color: white;
-    border: solid 2px rgb(119, 180, 230);
+    background-color: #fffffc;
+    border: solid 2px #40ffbf;
+    border-radius: 5px;
     box-shadow: 10px 10px 10px lightblue;
-    top: 35%;
+    width : 250px;
+    height : 275px;
+    top: 30%;
     left: 50px;
     overflow-y: scroll;
     /* Hide scrollbar for : */
@@ -206,21 +209,28 @@ body {
     width: inherit;
     font-weight: bold;
     font-family: system-ui;
+    color: transparent;
+    background: -webkit-linear-gradient(120deg,#42e5eb 0%,#41e9b1 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .field {
     font-weight: bold;
     font-family: system-ui;
+    margin: 20px 2px;
 }
 
 .blockListIFollowThem {
     position: fixed;
     background-color: white;
-    border: solid 2px rgb(119, 180, 230);
+    border-radius: 5px;
+    border: solid 2px #40ffbf;
     box-shadow: 10px 10px 10px lightblue;
     height: 250px;
     width: 200px;
-    top: 35%;
+    top: 30%;
     right: 50px;
     overflow-y: scroll;
     /* Hide scrollbar for : */
@@ -234,13 +244,17 @@ body {
 }
 
 .titleListIFollowThem {
-    background-color: rgb(119, 180, 230);
     text-align: center;
-    position: fixed;
     width: inherit;
+    height: 25px;
     font-weight: bold;
     font-family: system-ui;
-    height: 25px;
+    color: transparent;
+    background: -webkit-linear-gradient(120deg,#42e5eb 0%,#41e9b1 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: fixed;
     line-height: 25px; /* Basic solution to center verticaly */
 }
 
@@ -262,9 +276,45 @@ body {
     line-height: 40px;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-family: system-ui;
 }
 
 input[type=text]:focus {
     border: solid 2px #e2e2e2;
-    box-shadow: 5px 5px #e2e2e2, 0px -5px #e2e2e2;
+}
+
+input[type=text]{
+    width: 96%;
+    height: 40px;
+    margin-top: 2px;
+    border: none;
+    font-family: system-ui;
+    font-size: medium;
+}
+
+input[type=textarea]{
+    width: 96%;
+    height: 40px;
+    margin-top: 2px;
+    border: none;
+    font-family: system-ui;
+    font-size: medium;
+}
+
+.label{
+    color:#40ffbfd7;
+}
+
+
+button[type=submit]{
+    background-color: white;
+    border-radius: 5px;
+    border-color: #40ffbf;
+    box-shadow: 3px 3px 10px lightblue;
+    color: #40ffbf;
+    text-align: center;
+    margin: 8px 70px;
+    width: 40%;
+    font-family: system-ui;
+    font-size: large;
 }
