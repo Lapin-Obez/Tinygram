@@ -65,7 +65,8 @@
             me: "",
             myListIFollowThem: [],
             timeline: [], // Liste de tous les posts renvoyés par le backend avec allPost (les 2 plus récents pour le moment)
-            
+            cursorForNextPosts :"",
+
             loadListFollow: function() {
                 return m.request({
                     method: "GET",
@@ -85,8 +86,10 @@
                 })
                 .then(function(result) {
                     myAccount.timeline = result.items //marche pas en run bizarrement
+                    myAccount.cursorForNextPosts = result.nextPageToken
                 })
             },
+            
             // Compare 2 lists if they are exactly the same
             listsAreEqual: function(list1, list2) {
                 if (list1.length !== list2.length){return false}
@@ -157,7 +160,21 @@
                                 m('p', {class:'bodyPost'}, item.properties.body)
                                 
                             ])
-                        })
+                        }),
+                        m('button',{class:'buttonNextPosts',
+                                onclick: function() {
+                                    return m.request({
+                                        method: "GET",
+                                        url: "_ah/api/myApi/v1/allPost/" + myAccount.cursorForNextPosts
+                                    })
+                                    .then(function(result) {
+                                        myAccount.timeline = myAccount.timeline.concat(result.items)
+                                        myAccount.cursorForNextPosts = result.nextPageToken
+                                        m.redraw()
+                                        consle.log("next posts")
+                                    })
+                                }
+                        },"Next")
                     ),
 
                     //Code de la liste des comptes suivis
