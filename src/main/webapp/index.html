@@ -86,6 +86,11 @@
                 .then(function(result) {
                     myAccount.timeline = result.items //marche pas en run bizarrement
                 })
+            },
+            // Compare 2 lists if they are exactly the same
+            listsAreEqual: function(list1, list2) {
+                if (list1.length !== list2.length){return false}
+                return list1.every((value, index) => value === list2[index])
             }
         }
  
@@ -123,34 +128,30 @@
                                         m('div',{class:'nameOwnerPost'},item.properties.owner.split('@')[0]), // We take the name before the @
                                         m('div',{class:'datePost'},item.properties.date)
                                     ]),
-                                    m('button',{class:'buttonLike', 
-                                                onclick:function(e){
-                                                    return m.request({
-                                                        method: "GET",
-                                                        url: "_ah/api/myApi/v1/likeMessage/"+ item.key.name +"/?access_token="+ myAccount.me
-                                                    }).then(function(result) {console.log("bonsoir c'est like")})
-                                                }},
+                                    m('button',{class:'buttonLike',
+                                        onclick:function(){
+                                            return m.request({
+                                                method: "GET",
+                                                url: "_ah/api/myApi/v1/likeMessage/"+ item.key.name +"/?access_token="+ myAccount.me
+                                            }).then(function(result) {console.log("bonsoir c'est like")})
+                                        }},
                                         m('img', {class:'imageLike','src':"emptyHeart.png"})),
                                     m('button',{class:'buttonFollow',
-                                                onclick:function(){
-                                                    return m.request({
-                                                        method: "GET",
-                                                        url: "_ah/api/myApi/v1/followSomeone/"+ item.properties.owner +"/?access_token="+ myAccount.me
-                                                    }).then(function(result) {
-                                                        /* the object result is weird
-                                                        // With that, we don't have to request again to get the entire list
-                                                        if(!myAccount.myListIFollowThem.includes(result)){
-                                                            myAccount.myListIFollowThem.push(result)
-                                                        }
-                                                        console.log("result : " + result)
-                                                        for(let i in result){
-                                                            console.log("i : "+ i + " result.i : "+ result.i)
-                                                        }
-                                                        m.redraw()
-                                                        */
-                                                        console.log("bonjour c'est follow")
-                                                    })
-                                                }},"Follow")
+                                            onclick:function(){
+                                                return m.request({
+                                                    method: "GET",
+                                                    url: "_ah/api/myApi/v1/followSomeone/"+ item.properties.owner +"/?access_token="+ myAccount.me
+                                                }).then(function(result) {
+                                                    // With that, we don't have to request again to get the entire list
+                                                    if(!myAccount.listsAreEqual(myAccount.myListIFollowThem,result.properties.iFollowThem)){
+                                                        // If the name of the user is blabla@blabla, it seperate the name of the account
+                                                        // If not, the name is blabla, that won't change anything
+                                                        myAccount.myListIFollowThem.push(result.properties.iFollowThem.pop().split('@')[0])
+                                                    }
+                                                    m.redraw()
+                                                    console.log("bonjour c'est follow")
+                                                })
+                                            }},"Follow")
                                 ]),
                                 m('div',{class:'blockImagePost'}, // Useful to center the image
                                     m('img', {class:'imagePost','src':item.properties.url})
