@@ -142,10 +142,8 @@
                                                     method: "GET",
                                                     url: "_ah/api/myApi/v1/followSomeone/"+ item.properties.owner +"/?access_token="+ myAccount.me
                                                 }).then(function(result) {
-                                                    // With that, we don't have to request again to get the entire list
+                                                    // With that, we don't have to redraw the entire list, mithril updates only one line of the table
                                                     if(!myAccount.listsAreEqual(myAccount.myListIFollowThem,result.properties.iFollowThem)){
-                                                        // If the name of the user is blabla@blabla, it seperate the name of the account
-                                                        // If not, the name is blabla, that won't change anything
                                                         myAccount.myListIFollowThem.push(result.properties.iFollowThem.pop())
                                                     }
                                                     m.redraw()

@@ -263,7 +263,7 @@ body {
 }
 
 .tableFollowedAccounts {
-    border-spacing: 0px;
+    border-spacing: 0px; /* The table has the width of the columns content */
 }
 
 .columnImageUserFollowed {
