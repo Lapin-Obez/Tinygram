@@ -262,6 +262,10 @@ body {
     line-height: 25px; /* Basic solution to center verticaly */
 }
 
+.tableFollowedAccounts {
+    border-spacing: 0px;
+}
+
 .columnImageUserFollowed {
     width: 32px;
     overflow: hidden;
@@ -271,7 +275,7 @@ body {
 .columnNameUserFollowed {
     width: 168px;
     overflow: hidden;
-    /* height: 25px; Only one column have to define a height */
+    /* height: 20px; Only one column have to define a height */
 }
 
 .nameAccount {

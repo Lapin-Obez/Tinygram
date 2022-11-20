@@ -65,10 +65,7 @@ public class TinyGramEndPoint {
             ajout.setProperty("photo", urlPhoto);
             e = ajout;
             datastore.put(ajout);
-
         }
-        
-
 		return e;
 	}
     @ApiMethod(name = "myFollows", httpMethod = HttpMethod.GET)

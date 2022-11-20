@@ -146,7 +146,7 @@
                                                     if(!myAccount.listsAreEqual(myAccount.myListIFollowThem,result.properties.iFollowThem)){
                                                         // If the name of the user is blabla@blabla, it seperate the name of the account
                                                         // If not, the name is blabla, that won't change anything
-                                                        myAccount.myListIFollowThem.push(result.properties.iFollowThem.pop().split('@')[0])
+                                                        myAccount.myListIFollowThem.push(result.properties.iFollowThem.pop())
                                                     }
                                                     m.redraw()
                                                     console.log("bonjour c'est follow")
@@ -173,7 +173,7 @@
                             myAccount.myListIFollowThem.map(function(item) {
                                 return m("tr", [
                                     m('td', {class:'cellImageUserFollowed'}, m('img', {class:'imageUserFollowed','src':"defaultImageUser.png"})),
-                                    m('td', m('div', {class:"nameAccount"}, item))
+                                    m('td', m('div', {class:"nameAccount"}, item.split('@')[0]))
                                 ])
                             })
                         ])
