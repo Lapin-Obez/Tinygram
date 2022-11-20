@@ -165,13 +165,13 @@
                                 onclick: function() {
                                     return m.request({
                                         method: "GET",
-                                        url: "_ah/api/myApi/v1/allPost/" + myAccount.cursorForNextPosts
+                                        url: "_ah/api/myApi/v1/allPost/?cursorString=" + myAccount.cursorForNextPosts
                                     })
                                     .then(function(result) {
                                         myAccount.timeline = myAccount.timeline.concat(result.items)
                                         myAccount.cursorForNextPosts = result.nextPageToken
                                         m.redraw()
-                                        consle.log("next posts")
+                                        console.log("next posts")
                                     })
                                 }
                         },"Next")
@@ -219,7 +219,7 @@
                             placeholder:"Your text",
                             oninput: function(e) { PostForm.body = e.target.value }})),
                         ]),
-                        m('div',{class:'control'},m("button[type=submit]", {class:'button is-link'},"Post")),
+                        m("button[type=submit]", {class:'button is-link'},"Post"),
                     ]))
                 ])
             }
@@ -227,53 +227,51 @@
  
  
  var MyPost = {
-         list: [],
-         nextToken: "",
-         loadList: function() {
-             return m.request({
-                 method: "GET",
-                 url: "_ah/api/myApi/v1/getPost?access_token="+me})
-             .then(function(result) {
-                 console.log("got:",result)
-                 MyPost.list=result.items
-                 if ('nextPageToken' in result) {
-                     MyPost.nextToken= result.nextPageToken
-                 } else {
-                     MyPost.nextToken=""
-                 }})
-         },
-         next: function() {
-             return m.request({
-                 method: "GET",
-                 url: "_ah/api/myApi/v1/mypost/"+me+"?next="+MyPost.nextToken})
-             .then(function(result) {
-                 console.log("got:",result)
-                 result.items.map(function(item){MyPost.list.push(item)})
-                 if ('nextPageToken' in result) {
-                     MyPost.nextToken= result.nextPageToken
-                 } else {
-                     MyPost.nextToken=""
-                 }})
-         },
-          postMessage: function() {
-             /* var data={
-                      'url':PostForm.url,
-                      'body':PostForm.body}
-              console.log("post:"+data)*/
-              return m.request({
-                  method: "GET",//"_ah/api/myApi/v1/postMessage?access_token="+me
-                  url: "_ah/api/myApi/v1/userPost?name=gabrielpouplin@gmail.com?next=",
-                  //params : data,            
-              })
-               .then(function(result) {
-                    console.log("got:",result)
-                    
-
-                        }).catch(function (e) {
-                            console.log(e);
-                        })
-                }
+        list: [],
+        nextToken: "",
+        loadList: function() {
+            return m.request({
+                method: "GET",
+                url: "_ah/api/myApi/v1/getPost?access_token="+myAccount.me})
+            .then(function(result) {
+                console.log("got:",result)
+                MyPost.list=result.items
+                if ('nextPageToken' in result) {
+                    MyPost.nextToken= result.nextPageToken
+                } else {
+                    MyPost.nextToken=""
+                }})
+        },
+        next: function() {
+            return m.request({
+                method: "GET",
+                url: "_ah/api/myApi/v1/mypost/"+myAccount.me+"?next="+MyPost.nextToken})
+            .then(function(result) {
+                console.log("got:",result)
+                result.items.map(function(item){MyPost.list.push(item)})
+                if ('nextPageToken' in result) {
+                    MyPost.nextToken= result.nextPageToken
+                } else {
+                    MyPost.nextToken=""
+                }})
+        },
+        postMessage: function() {
+            var data={
+                'body':PostForm.body,
+                'url':PostForm.url
+            }
+            return m.request({
+                method: "POST",
+                url:"_ah/api/myApi/v1/postMessage?access_token="+myAccount.me,
+                params : data,            
+            })
+            .then(function(result) {
+                console.log("got:",result)
+            }).catch(function (e) {
+                console.log(e);
+            })
         }
+    }
         
         /*
         var PostView = {

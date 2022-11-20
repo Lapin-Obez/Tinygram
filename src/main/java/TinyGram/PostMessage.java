@@ -5,5 +5,6 @@ public class PostMessage {
 	public String body;
 	public String url;
 	
-	public PostMessage() {}
+	public PostMessage() {
+    }
 }
