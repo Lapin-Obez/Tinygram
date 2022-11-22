@@ -1,5 +1,5 @@
 indexes:
-- kind: User
+- kind: Post
   properties:
     - name: date
       direction: desc

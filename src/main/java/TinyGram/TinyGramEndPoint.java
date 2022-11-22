@@ -23,6 +23,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
@@ -159,11 +160,11 @@ public class TinyGramEndPoint {
 	@ApiMethod(name = "allPost",httpMethod = ApiMethod.HttpMethod.GET)
 	public CollectionResponse<Entity> allPost(@Nullable @Named("next") String cursorString)
 			throws UnauthorizedException {     
-		Query q = new Query("Post");
+		Query q = new Query("Post").addSort("date", SortDirection.DESCENDING);
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		PreparedQuery pq = datastore.prepare(q);
 
-		FetchOptions fetchOptions = FetchOptions.Builder.withLimit(2);
+		FetchOptions fetchOptions = FetchOptions.Builder.withLimit(8);
 
 		if (cursorString != null) {
 			fetchOptions.startCursor(Cursor.fromWebSafeString(cursorString));
