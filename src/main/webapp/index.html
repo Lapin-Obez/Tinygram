@@ -125,6 +125,12 @@
                     // pour l'instant, on en prend que 2
                     m('div', {class:'blockDisplayPosts'}, 
                         myAccount.timeline.map(function(item){
+                            let postIsLike = false;
+                            let buttonImage = "emptyHeart.png"
+                            if(item.properties.likeU.includes(jwt_decode(myAccount.me).email)){
+                                postIsLike = true;
+                                buttonImage = "fullHeart.png"
+                            }
                             return m('div',{class:'blockOnePost'}, [
                                 m('div',{class:'headPost'}, [
                                     m('div',{class:'nameOwnerAndDatePost'}, [ // les champs de l'objet sont dans le champ properties
@@ -137,11 +143,13 @@
                                                 method: "GET",
                                                 url: "_ah/api/myApi/v1/likeMessage/"+ item.key.name +"/?access_token="+ myAccount.me
                                             }).then(function(result) {
+                                                if(!postIsLike){
                                                 vnode.srcElement.src = "fullHeart.png";
+                                                }
                                                 console.log("bonsoir c'est like")
                                             })
                                         }},
-                                        m('img', {class:'imageLike','src':"emptyHeart.png"})),
+                                        m('img', {class:'imageLike','src':buttonImage})),
                                     m('button',{class:'buttonFollow',
                                             onclick:function(){
                                                 return m.request({
