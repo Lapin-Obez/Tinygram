@@ -132,11 +132,14 @@
                                         m('div',{class:'datePost'},item.properties.date)
                                     ]),
                                     m('button',{class:'buttonLike',
-                                        onclick:function(){
+                                        onclick:function(vnode){
                                             return m.request({
                                                 method: "GET",
                                                 url: "_ah/api/myApi/v1/likeMessage/"+ item.key.name +"/?access_token="+ myAccount.me
-                                            }).then(function(result) {console.log("bonsoir c'est like")})
+                                            }).then(function(result) {
+                                                vnode.srcElement.src = "fullHeart.png";
+                                                console.log("bonsoir c'est like")
+                                            })
                                         }},
                                         m('img', {class:'imageLike','src':"emptyHeart.png"})),
                                     m('button',{class:'buttonFollow',
