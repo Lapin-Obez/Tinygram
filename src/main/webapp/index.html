@@ -165,7 +165,7 @@
                                 onclick: function() {
                                     return m.request({
                                         method: "GET",
-                                        url: "_ah/api/myApi/v1/allPost/?cursorString=" + myAccount.cursorForNextPosts
+                                        url: "_ah/api/myApi/v1/allPost/?next=" + myAccount.cursorForNextPosts
                                     })
                                     .then(function(result) {
                                         myAccount.timeline = myAccount.timeline.concat(result.items)
