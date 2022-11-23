@@ -17,267 +17,270 @@
 
 </head>
 <body>
-    <script>
-        function handleCredentialResponse(response) {
-            console.log("callback called:"+response.credential)
-            // decodeJwtResponse() is a custom function defined by you
-            // to decode the credential response.
-            const responsePayload = jwt_decode(response.credential);
-            console.log("ID: " + responsePayload.sub);
-            console.log('Full Name: ' + responsePayload.name);
-            console.log('Given Name: ' + responsePayload.given_name);
-            console.log('Family Name: ' + responsePayload.family_name);
-            console.log("Image URL: " + responsePayload.picture);
-            console.log("Email: " + responsePayload.email);
-                        
-            if(responsePayload != null){
-                m.request({
-	                method: "POST",
-	                url: "_ah/api/myApi/v1/addUser?access_token="+response.credential,
-                    params: {urlPhoto:responsePayload.picture}
-	            }).then(function(result){
-                    myAccount.me = response.credential;
-                    m.mount(document.body,PostForm)
-	            }).catch(function (e) {
-                    console.log(e);
-                })
-                m.redraw();
-            }
-        }
-
-        var LogPage = {
-            view: function() {
-                return m("a", [
-                    m('div',{
-                        id: 'g_id_onload',
-                        'data-client_id': '622187817241-fqke0l023q148lc21gv1qthq82imi4mg.apps.googleusercontent.com',
-                        'data-callback':"handleCredentialResponse" ,
-                    }),
-                    m('div',{class:'g_id_signin', 'data-type':'standard'})
-                ])
-            }
-        }
-
-        var myAccount = {
-            me: "",
-            myListIFollowThem: [],
-            timeline: [], // Liste de tous les posts renvoyés par le backend avec allPost (les 2 plus récents pour le moment)
-            cursorForNextPosts :"",
-
-            loadListFollow: function() {
-                return m.request({
-                    method: "GET",
-                    url: "_ah/api/myApi/v1/myFollows?access_token="+myAccount.me
-                })
-                .then(function(result) {
-                    myAccount.myListIFollowThem = result.items
-                })
-            },
-            
-            loadTimeline: function() {
-                return m.request({
-                    method: "GET",
-                    url: "_ah/api/myApi/v1/allPost"
-                    // le paramètre n'est pas obligatoire pour que la méthode s'exécute
-                })
-                .then(function(result) {
-                    myAccount.timeline = result.items //marche pas en run bizarrement
-                    myAccount.cursorForNextPosts = result.nextPageToken
-                })
-            },
-            
-            // Compare 2 lists if they are exactly the same
-            listsAreEqual: function(list1, list2) {
-                if (list1.length !== list2.length){return false}
-                return list1.every((value, index) => value === list2[index])
-            }
-        }
- 
-        var PostForm = {
-            url:"",
-            body:"",
-            oninit: function(){
-                myAccount.loadListFollow();
-                myAccount.loadTimeline();
-            },
-
-            view: function(){
-                return m("main",[
-                    //Création du header de la page de l'application
-                    m('div',{class:'headPage'},[
-                        m('div',{class:'nameApp'},"TinyGram"),  
-                        m('div', {class:'searchBar'},[
-                            m("button",{class:'buttonSearchBar'},m("img",{class:'searchImage',"src":"image/search.png"})),
-                            m("input[type=textSearch]", {
-                                class:'searchInput',
-                                placeholder:"search account",
-                                oninput: function(e) {/*Do nothing for now*/}
-                            }),
-                        ]),                      
-                        m("img",{class:'imageUser',"src":jwt_decode(myAccount.me).picture})
-                    ]),
+<script>
+    function handleCredentialResponse(response) {
+        console.log("callback called:"+response.credential)
+        // decodeJwtResponse() is a custom function defined by you
+        // to decode the credential response.
+        const responsePayload = jwt_decode(response.credential);
+        console.log("ID: " + responsePayload.sub);
+        console.log('Full Name: ' + responsePayload.name);
+        console.log('Given Name: ' + responsePayload.given_name);
+        console.log('Family Name: ' + responsePayload.family_name);
+        console.log("Image URL: " + responsePayload.picture);
+        console.log("Email: " + responsePayload.email);
                     
-                    //Code de l'affichage des posts du plus récent au plus vieux du datastore
-                    // pour l'instant, on en prend que 2
-                    m('div', {class:'blockDisplayPosts'}, 
-                        myAccount.timeline.map(function(item){
-                            let postIsLike = false;
-                            let buttonImage = "image/emptyHeart.png"
-                            if(item.properties.likeU.includes(jwt_decode(myAccount.me).email)){
-                                postIsLike = true;
-                                buttonImage = "image/fullHeart.png"
-                            }
-                            return m('div',{class:'blockOnePost'}, [
-                                m('div',{class:'headPost'}, [
-                                    m('div',{class:'nameOwnerAndDatePost'}, [ // les champs de l'objet sont dans le champ properties
-                                        m('div',{class:'nameOwnerPost'},item.properties.owner.split('@')[0]), // We take the name before the @
-                                        m('div',{class:'datePost'},item.properties.date)
-                                    ]),
-                                    m('button',{class:'buttonLike',
-                                        onclick:function(vnode){
+        if(responsePayload != null){
+            m.request({
+                method: "POST",
+                url: "_ah/api/myApi/v1/addUser?access_token="+response.credential,
+                params: {urlPhoto:responsePayload.picture}
+            }).then(function(result){
+                myAccount.me = response.credential;
+                m.mount(document.body,MainPage)
+            }).catch(function (e) {
+                console.log(e);
+            })
+            m.redraw();
+        }
+    }
+
+    var LogPage = {
+        view: function() {
+            return m("a", [
+                m('div',{
+                    id: 'g_id_onload',
+                    'data-client_id': '622187817241-fqke0l023q148lc21gv1qthq82imi4mg.apps.googleusercontent.com',
+                    'data-callback':"handleCredentialResponse" ,
+                }),
+                m('div',{class:'g_id_signin', 'data-type':'standard'})
+            ])
+        }
+    }
+
+    var myAccount = {
+        me: "",
+        myListIFollowThem: [],
+        timeline: [], // List of the posts sent by the method allPost (there are 8 posts at the beginning)
+        cursorForNextPosts :"",
+
+        loadListFollow: function() {
+            return m.request({
+                method: "GET",
+                url: "_ah/api/myApi/v1/myFollows?access_token="+myAccount.me
+            })
+            .then(function(result) {
+                myAccount.myListIFollowThem = result.items
+            })
+        },
+        
+        loadTimeline: function() {
+            return m.request({
+                method: "GET",
+                url: "_ah/api/myApi/v1/allPost"
+                // the parameter can be null
+            })
+            .then(function(result) {
+                myAccount.timeline = result.items
+                myAccount.cursorForNextPosts = result.nextPageToken
+            })
+        },
+        
+        // Compare 2 lists if they are exactly the same
+        listsAreEqual: function(list1, list2) {
+            if (list1.length !== list2.length){return false}
+            return list1.every((value, index) => value === list2[index])
+        }
+    }
+
+    var MainPage = {
+        url:"",
+        body:"",
+        oninit: function(){
+            myAccount.loadListFollow();
+            myAccount.loadTimeline();
+        },
+
+        view: function(){
+            return m("main",[
+                // Creation of the HEADER of the application page
+                m('div',{class:'headPage'},[
+                    m('div',{class:'nameApp'},"TinyGram"),  
+                    m('div', {class:'searchBar'},[
+                        m("button",{class:'buttonSearchBar'},m("img",{class:'searchImage',"src":"image/search.png"})),
+                        m("input[type=textSearch]", {
+                            class:'searchInput',
+                            placeholder:"search account",
+                            oninput: function(e) {/*Do nothing for now*/}
+                        }),
+                    ]),                      
+                    m("img",{class:'imageUser',"src":jwt_decode(myAccount.me).picture})
+                ]),
+                
+                // Part for the DISPLAY OF THE TIMELINE and all the features associated
+                m('div', {class:'blockDisplayPosts'}, 
+                    myAccount.timeline.map(function(item){
+                        let postIsLike = false;
+                        let buttonImage = "image/emptyHeart.png"
+                        if(item.properties.likeU.includes(jwt_decode(myAccount.me).email)){
+                            postIsLike = true;
+                            buttonImage = "image/fullHeart.png"
+                        }
+                        return m('div',{class:'blockOnePost'}, [
+                            m('div',{class:'headPost'}, [
+                                m('div',{class:'nameOwnerAndDatePost'}, [ // The data of a post is in its field properties
+                                    m('div',{class:'nameOwnerPost'},item.properties.owner.split('@')[0]), // We take the name before the @
+                                    m('div',{class:'datePost'},item.properties.date)
+                                ]),
+                                m('button',{class:'buttonLike',
+                                    onclick:function(vnode){
+                                        return m.request({
+                                            method: "GET",
+                                            url: "_ah/api/myApi/v1/likeMessage/"+ item.key.name +"/?access_token="+ myAccount.me
+                                        }).then(function(result) {
+                                            if(!postIsLike){
+                                                vnode.srcElement.src = "image/fullHeart.png";
+                                            }
+                                            console.log("The post is liked <3")
+                                        })
+                                    }},
+                                    m('img', {class:'imageLike','src':buttonImage})),
+                                m('button',{class:'buttonFollow',
+                                        onclick:function(){
                                             return m.request({
                                                 method: "GET",
-                                                url: "_ah/api/myApi/v1/likeMessage/"+ item.key.name +"/?access_token="+ myAccount.me
+                                                url: "_ah/api/myApi/v1/followSomeone/"+ item.properties.owner +"/?access_token="+ myAccount.me
                                             }).then(function(result) {
-                                                if(!postIsLike){
-                                                vnode.srcElement.src = "image/fullHeart.png";
+                                                // With that, we don't have to redraw the entire list, mithril updates only one line of the table
+                                                // and we can do this because followSomeone returns the modified list
+                                                if(!myAccount.listsAreEqual(myAccount.myListIFollowThem,result.properties.iFollowThem)){
+                                                    myAccount.myListIFollowThem.push(result.properties.iFollowThem.pop())
                                                 }
-                                                console.log("The post is liked <3")
+                                                m.redraw()
+                                                console.log("You are now following this account !")
                                             })
-                                        }},
-                                        m('img', {class:'imageLike','src':buttonImage})),
-                                    m('button',{class:'buttonFollow',
-                                            onclick:function(){
-                                                return m.request({
-                                                    method: "GET",
-                                                    url: "_ah/api/myApi/v1/followSomeone/"+ item.properties.owner +"/?access_token="+ myAccount.me
-                                                }).then(function(result) {
-                                                    // With that, we don't have to redraw the entire list, mithril updates only one line of the table
-                                                    if(!myAccount.listsAreEqual(myAccount.myListIFollowThem,result.properties.iFollowThem)){
-                                                        myAccount.myListIFollowThem.push(result.properties.iFollowThem.pop())
-                                                    }
-                                                    m.redraw()
-                                                    console.log("You are now following this account !")
-                                                })
-                                            }},"Follow")
-                                ]),
-                                m('div',{class:'blockImagePost'}, // Useful to center the image
-                                    m('img', {class:'imagePost','src':item.properties.url})
-                                ),
-                                m('p', {class:'bodyPost'}, item.properties.body)
-                                
-                            ])
-                        }),
-                        m('button',{class:'buttonNextPosts',
-                                onclick: function() {
-                                    return m.request({
-                                        method: "GET",
-                                        url: "_ah/api/myApi/v1/allPost/?next=" + myAccount.cursorForNextPosts
-                                    })
-                                    .then(function(result) {
-                                        myAccount.timeline = myAccount.timeline.concat(result.items)
-                                        myAccount.cursorForNextPosts = result.nextPageToken
-                                        m.redraw()
-                                    })
-                                }
-                        },"Next")
-                    ),
-
-                    //Code de la liste des comptes suivis
-                    m('div', {class:'blockListIFollowThem'}, [
-                        m('div',{class:'titleListIFollowThem'},"Followed Accounts"),
-                        m('table', {class:'tableFollowedAccounts'},[
-                            m('tr', [
-                                m('th',{class:'columnImageUserFollowed'}, ""),
-                                m('th',{class:'columnNameUserFollowed'}, "")
+                                        }},"Follow")
                             ]),
-                            myAccount.myListIFollowThem.map(function(item) {
-                                return m("tr", [
-                                    m('td', {class:'cellImageUserFollowed'}, m('img', {class:'imageUserFollowed','src':"image/defaultImageUser.png"})),
-                                    m('td', m('div', {class:"nameAccount"}, item.split('@')[0]))
-                                ])
-                            })
+                            m('div',{class:'blockImagePost'}, // Useful to center the image
+                                m('img', {class:'imagePost','src':item.properties.url})
+                            ),
+                            m('p', {class:'bodyPost'}, item.properties.body)
+                            
                         ])
+                    }),
+                    m('button',{class:'buttonNextPosts',
+                            onclick: function() {
+                                return m.request({
+                                    method: "GET",
+                                    url: "_ah/api/myApi/v1/allPost/?next=" + myAccount.cursorForNextPosts
+                                })
+                                .then(function(result) {
+                                    // We add the next posts in the current timeline and re-set the cursor
+                                    myAccount.timeline = myAccount.timeline.concat(result.items)
+                                    myAccount.cursorForNextPosts = result.nextPageToken
+                                    m.redraw()
+                                })
+                            }
+                    },"Next")
+                ),
+
+                // Part for the display of our FOLLOWED ACCOUNTS
+                m('div', {class:'blockListIFollowThem'}, [
+                    m('div',{class:'titleListIFollowThem'},"Followed Accounts"),
+                    m('table', {class:'tableFollowedAccounts'},[
+                        m('tr', [
+                            m('th',{class:'columnImageUserFollowed'}, ""),
+                            m('th',{class:'columnNameUserFollowed'}, "")
+                        ]),
+                        myAccount.myListIFollowThem.map(function(item) {
+                            return m("tr", [
+                                m('td', {class:'cellImageUserFollowed'}, m('img', {class:'imageUserFollowed','src':"image/defaultImageUser.png"})),
+                                m('td', m('div', {class:"nameAccount"}, item.split('@')[0]))
+                            ])
+                        })
+                    ])
+                ]),
+
+                // Part for SEND A POST to the datastore
+                m("form", {
+                    onsubmit: function(e) {
+                        e.preventDefault()
+                        if (url="") {url="https://dummyimage.com/320x200/000/fff&text="+Date.now()} 
+                        if (body="") {body="bla bla bla \n"+Date.now()}
+                        MyPost.postMessage()
+                    }
+                }, 
+
+                // Part for POST an url with a text
+                m('div', {class:'posting'}, [
+                    m('div', {class: 'postingTitle'}, "Post Message"),
+                    m('div', {class:'field'},[
+                        m("label", {class:'label'},"URL"),
+                        m('div',{class:'control'}, m("input[type=text]", {
+                        class:'input is-rounded',
+                        placeholder:"Your url",
+                            oninput: function(e) {MainPage.url = e.target.value}})),
                     ]),
-                    m("form", {
-                        onsubmit: function(e) {
-                            e.preventDefault()
-                            if (url="") {url="https://dummyimage.com/320x200/000/fff&text="+Date.now()} 
-                            if (body="") {body="bla bla bla \n"+Date.now()}
-                            MyPost.postMessage()
-                        }
-                    }, 
-
-                    //Code pour le bloc post message
-                    m('div', {class:'posting'}, [
-                        m('div', {class: 'postingTitle'}, "Post Message"),
-                        m('div', {class:'field'},[
-                            m("label", {class:'label'},"URL"),
-                            m('div',{class:'control'}, m("input[type=text]", {
-                            class:'input is-rounded',
-                            placeholder:"Your url",
-                                oninput: function(e) {PostForm.url = e.target.value}})),
-                        ]),
-                        m('div',{class:'field'},[
-                            m("label", {class: 'label'},"Body"),
-                            m('div',{class:'control'},m("input[type=textarea]", {
-                            class:'textarea',
-                            placeholder:"Your text",
-                            oninput: function(e) { PostForm.body = e.target.value }})),
-                        ]),
-                        m("button[type=submit]", {class:'button is-link'},"Post"),
-                    ]))
-                ])
-            }
+                    m('div',{class:'field'},[
+                        m("label", {class: 'label'},"Body"),
+                        m('div',{class:'control'},m("input[type=textarea]", {
+                        class:'textarea',
+                        placeholder:"Your text",
+                        oninput: function(e) { MainPage.body = e.target.value }})),
+                    ]),
+                    m("button[type=submit]", {class:'button is-link'},"Post"),
+                ]))
+            ])
         }
- 
- 
-        var MyPost = {
-            list: [],
-            nextToken: "",
-            loadList: function() {
-                return m.request({
-                    method: "GET",
-                    url: "_ah/api/myApi/v1/getPost?access_token="+myAccount.me})
-                .then(function(result) {
-                    MyPost.list=result.items
-                    if ('nextPageToken' in result) {
-                        MyPost.nextToken= result.nextPageToken
-                    } else {
-                        MyPost.nextToken=""
-                    }})
-            },
-            next: function() {
-                return m.request({
-                    method: "GET",
-                    url: "_ah/api/myApi/v1/mypost/"+myAccount.me+"?next="+MyPost.nextToken})
-                .then(function(result) {
-                    result.items.map(function(item){MyPost.list.push(item)})
-                    if ('nextPageToken' in result) {
-                        MyPost.nextToken= result.nextPageToken
-                    } else {
-                        MyPost.nextToken=""
-                    }})
-            },
-            postMessage: function() {
-                var data={
-                    'body':PostForm.body,
-                    'url':PostForm.url
-                }
-                return m.request({
-                    method: "POST",
-                    url:"_ah/api/myApi/v1/postMessage?access_token="+myAccount.me,
-                    params : data,            
-                })
-                .then(function(result) {
-                    console.log("got:",result)
-                }).catch(function (e) {
-                    console.log(e);
-                })
-            }
-        }
+    }
 
-        m.mount(document.body,LogPage)        
-    </script>
+
+    var MyPost = {
+        list: [],
+        nextToken: "",
+        loadList: function() {
+            return m.request({
+                method: "GET",
+                url: "_ah/api/myApi/v1/getPost?access_token="+myAccount.me})
+            .then(function(result) {
+                MyPost.list=result.items
+                if ('nextPageToken' in result) {
+                    MyPost.nextToken= result.nextPageToken
+                } else {
+                    MyPost.nextToken=""
+                }})
+        },
+        next: function() {
+            return m.request({
+                method: "GET",
+                url: "_ah/api/myApi/v1/mypost/"+myAccount.me+"?next="+MyPost.nextToken})
+            .then(function(result) {
+                result.items.map(function(item){MyPost.list.push(item)})
+                if ('nextPageToken' in result) {
+                    MyPost.nextToken= result.nextPageToken
+                } else {
+                    MyPost.nextToken=""
+                }})
+        },
+        postMessage: function() {
+            var data={
+                'body':MainPage.body,
+                'url':MainPage.url
+            }
+            return m.request({
+                method: "POST",
+                url:"_ah/api/myApi/v1/postMessage?access_token="+myAccount.me,
+                params : data,            
+            })
+            .then(function(result) {
+                console.log("got:",result)
+            }).catch(function (e) {
+                console.log(e);
+            })
+        }
+    }
+
+    m.mount(document.body,LogPage)        
+</script>
 </body>
 </html>
