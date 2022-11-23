@@ -44,3 +44,8 @@ iFollowThem : La liste des gens qu'un User suit.
 name : Le mail d'un User.
 
 photo : l'url de la photo de profile google d'un User.
+
+Suite à plusieurs tentatives infructueuses de réalisation d'un Benchmark en essayant de créer un rapport dans la partie Trace de appEngine nous avons décidé d'abandonner la réalisation de celui-ci.
+
+Toutefois nous avons conscience que notre application souffre de quelque problemes notemment concernant les likes. En effet nous utilisons un compteur unique ce qui veut dire que si 1000 personne like le même message en même temps, elles devront attendre avant que leur demande soit pris en compte.
+
