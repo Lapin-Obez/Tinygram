@@ -167,6 +167,7 @@ body {
 
 .imagePost {
     max-width: 512px;
+    max-height: 400px;
 }
 
 .bodyPost {
