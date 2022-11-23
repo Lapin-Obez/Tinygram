@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>TinyGram</title>
 <link rel="stylesheet" href="application.css">
-<link rel="icon" href="favicon.png">
+<link rel="icon" href="image/favicon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="google-signin-scope" content="profile email">
 <meta name="google-signin-client_id" content="622187817241-fqke0l023q148lc21gv1qthq82imi4mg.apps.googleusercontent.com">
@@ -30,15 +30,12 @@
             console.log("Image URL: " + responsePayload.picture);
             console.log("Email: " + responsePayload.email);
                         
-            /*const url = "_ah/api/myApi/v1/Hello"+'?access_token=' + response.credential
-            fetch(url).then(response => response.text()).then(data => )*/
             if(responsePayload != null){
                 m.request({
 	                method: "POST",
 	                url: "_ah/api/myApi/v1/addUser?access_token="+response.credential,
                     params: {urlPhoto:responsePayload.picture}
 	            }).then(function(result){
-	        	    console.log("got:",result.properties.name);
                     myAccount.me = response.credential;
                     m.mount(document.body,PostForm)
 	            }).catch(function (e) {
@@ -74,7 +71,6 @@
                 })
                 .then(function(result) {
                     myAccount.myListIFollowThem = result.items
-                    console.log("got list follows:",result.items)
                 })
             },
             
@@ -111,7 +107,7 @@
                     m('div',{class:'headPage'},[
                         m('div',{class:'nameApp'},"TinyGram"),  
                         m('div', {class:'searchBar'},[
-                            m("button",{class:'buttonSearchBar'},m("img",{class:'searchImage',"src":"search.png"})),
+                            m("button",{class:'buttonSearchBar'},m("img",{class:'searchImage',"src":"image/search.png"})),
                             m("input[type=textSearch]", {
                                 class:'searchInput',
                                 placeholder:"search account",
@@ -126,10 +122,10 @@
                     m('div', {class:'blockDisplayPosts'}, 
                         myAccount.timeline.map(function(item){
                             let postIsLike = false;
-                            let buttonImage = "emptyHeart.png"
+                            let buttonImage = "image/emptyHeart.png"
                             if(item.properties.likeU.includes(jwt_decode(myAccount.me).email)){
                                 postIsLike = true;
-                                buttonImage = "fullHeart.png"
+                                buttonImage = "image/fullHeart.png"
                             }
                             return m('div',{class:'blockOnePost'}, [
                                 m('div',{class:'headPost'}, [
@@ -144,9 +140,9 @@
                                                 url: "_ah/api/myApi/v1/likeMessage/"+ item.key.name +"/?access_token="+ myAccount.me
                                             }).then(function(result) {
                                                 if(!postIsLike){
-                                                vnode.srcElement.src = "fullHeart.png";
+                                                vnode.srcElement.src = "image/fullHeart.png";
                                                 }
-                                                console.log("bonsoir c'est like")
+                                                console.log("The post is liked <3")
                                             })
                                         }},
                                         m('img', {class:'imageLike','src':buttonImage})),
@@ -161,7 +157,7 @@
                                                         myAccount.myListIFollowThem.push(result.properties.iFollowThem.pop())
                                                     }
                                                     m.redraw()
-                                                    console.log("bonjour c'est follow")
+                                                    console.log("You are now following this account !")
                                                 })
                                             }},"Follow")
                                 ]),
@@ -182,7 +178,6 @@
                                         myAccount.timeline = myAccount.timeline.concat(result.items)
                                         myAccount.cursorForNextPosts = result.nextPageToken
                                         m.redraw()
-                                        console.log("next posts")
                                     })
                                 }
                         },"Next")
@@ -198,7 +193,7 @@
                             ]),
                             myAccount.myListIFollowThem.map(function(item) {
                                 return m("tr", [
-                                    m('td', {class:'cellImageUserFollowed'}, m('img', {class:'imageUserFollowed','src':"defaultImageUser.png"})),
+                                    m('td', {class:'cellImageUserFollowed'}, m('img', {class:'imageUserFollowed','src':"image/defaultImageUser.png"})),
                                     m('td', m('div', {class:"nameAccount"}, item.split('@')[0]))
                                 ])
                             })
@@ -237,90 +232,50 @@
         }
  
  
- var MyPost = {
-        list: [],
-        nextToken: "",
-        loadList: function() {
-            return m.request({
-                method: "GET",
-                url: "_ah/api/myApi/v1/getPost?access_token="+myAccount.me})
-            .then(function(result) {
-                console.log("got:",result)
-                MyPost.list=result.items
-                if ('nextPageToken' in result) {
-                    MyPost.nextToken= result.nextPageToken
-                } else {
-                    MyPost.nextToken=""
-                }})
-        },
-        next: function() {
-            return m.request({
-                method: "GET",
-                url: "_ah/api/myApi/v1/mypost/"+myAccount.me+"?next="+MyPost.nextToken})
-            .then(function(result) {
-                console.log("got:",result)
-                result.items.map(function(item){MyPost.list.push(item)})
-                if ('nextPageToken' in result) {
-                    MyPost.nextToken= result.nextPageToken
-                } else {
-                    MyPost.nextToken=""
-                }})
-        },
-        postMessage: function() {
-            var data={
-                'body':PostForm.body,
-                'url':PostForm.url
+        var MyPost = {
+            list: [],
+            nextToken: "",
+            loadList: function() {
+                return m.request({
+                    method: "GET",
+                    url: "_ah/api/myApi/v1/getPost?access_token="+myAccount.me})
+                .then(function(result) {
+                    MyPost.list=result.items
+                    if ('nextPageToken' in result) {
+                        MyPost.nextToken= result.nextPageToken
+                    } else {
+                        MyPost.nextToken=""
+                    }})
+            },
+            next: function() {
+                return m.request({
+                    method: "GET",
+                    url: "_ah/api/myApi/v1/mypost/"+myAccount.me+"?next="+MyPost.nextToken})
+                .then(function(result) {
+                    result.items.map(function(item){MyPost.list.push(item)})
+                    if ('nextPageToken' in result) {
+                        MyPost.nextToken= result.nextPageToken
+                    } else {
+                        MyPost.nextToken=""
+                    }})
+            },
+            postMessage: function() {
+                var data={
+                    'body':PostForm.body,
+                    'url':PostForm.url
+                }
+                return m.request({
+                    method: "POST",
+                    url:"_ah/api/myApi/v1/postMessage?access_token="+myAccount.me,
+                    params : data,            
+                })
+                .then(function(result) {
+                    console.log("got:",result)
+                }).catch(function (e) {
+                    console.log(e);
+                })
             }
-            return m.request({
-                method: "POST",
-                url:"_ah/api/myApi/v1/postMessage?access_token="+myAccount.me,
-                params : data,            
-            })
-            .then(function(result) {
-                console.log("got:",result)
-            }).catch(function (e) {
-                console.log(e);
-            })
         }
-    }
-        
-        /*
-        var PostView = {
-        oninit: MyPost.loadList,
-        view: function() {
-                return m('div', [
-            m('div',{class:'listMyPost'},"My Posts"),
-            m('table', {class:'table is-striped',"table":"is-striped"},[
-                m('tr', [
-                m('th', {width:"50px"}, "like"),
-                m('th', {width:"50px"}, "del"),
-                m('th', {width:"50px"}, "Bodys"),
-                m('th', {width:"50px"}, "Urls"),
-                m('th', {width:"50px"}, "Like"),
-                ]),
-                MyPost.list.map(function(item) {
-                return m("tr", [
-                    m("td", m("button", {onclick: function(e) {
-                        console.log("like:"+item.key.id)
-                        }},"like")),
-                        m("td", m("button", {onclick: function(e) {
-                            console.log("del:"+item.key.id)
-                        }},"del")),
-                    m('td', m('label', item.properties.body)),
-                    m('td', m('img', {class: 'is-rounded', 'src': item.properties.url})),
-                    m('td', m('label', item.properties.likec)),
-                ])
-                }),
-        //	    m("div", isError ? "An error occurred" : "Saved"),
-                m('button',{
-                    class: 'button is-link',
-                    onclick: function(e) {MyPost.next()}
-                    },
-                "Next"),
-                ])
-            ])
-        }
-        }*/
 
         m.mount(document.body,LogPage)        
     </script>

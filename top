@@ -1,0 +1,254 @@
+[1mdiff --git a/favicon.ico b/favicon.ico[m
+[1mdeleted file mode 100644[m
+[1mindex ef19e88..0000000[m
+Binary files a/favicon.ico and /dev/null differ
+[1mdiff --git a/src/main/webapp/defaultImageUser.png b/src/main/webapp/defaultImageUser.png[m
+[1mdeleted file mode 100644[m
+[1mindex 365dccb..0000000[m
+Binary files a/src/main/webapp/defaultImageUser.png and /dev/null differ
+[1mdiff --git a/src/main/webapp/emptyHeart.png b/src/main/webapp/emptyHeart.png[m
+[1mdeleted file mode 100644[m
+[1mindex dd7bab0..0000000[m
+Binary files a/src/main/webapp/emptyHeart.png and /dev/null differ
+[1mdiff --git a/src/main/webapp/favicon.png b/src/main/webapp/favicon.png[m
+[1mdeleted file mode 100644[m
+[1mindex 96802c8..0000000[m
+Binary files a/src/main/webapp/favicon.png and /dev/null differ
+[1mdiff --git a/src/main/webapp/fullHeart.png b/src/main/webapp/fullHeart.png[m
+[1mdeleted file mode 100644[m
+[1mindex 2f79c55..0000000[m
+Binary files a/src/main/webapp/fullHeart.png and /dev/null differ
+[1mdiff --git a/src/main/webapp/index.html b/src/main/webapp/index.html[m
+[1mindex 6d5afec..6d13b72 100644[m
+[1m--- a/src/main/webapp/index.html[m
+[1m+++ b/src/main/webapp/index.html[m
+[36m@@ -4,7 +4,7 @@[m
+ <meta charset="UTF-8">[m
+ <title>TinyGram</title>[m
+ <link rel="stylesheet" href="application.css">[m
+[31m-<link rel="icon" href="favicon.png">[m
+[32m+[m[32m<link rel="icon" href="image/favicon.png">[m
+ <meta name="viewport" content="width=device-width, initial-scale=1">[m
+ <meta name="google-signin-scope" content="profile email">[m
+ <meta name="google-signin-client_id" content="622187817241-fqke0l023q148lc21gv1qthq82imi4mg.apps.googleusercontent.com">[m
+[36m@@ -30,15 +30,12 @@[m
+             console.log("Image URL: " + responsePayload.picture);[m
+             console.log("Email: " + responsePayload.email);[m
+                         [m
+[31m-            /*const url = "_ah/api/myApi/v1/Hello"+'?access_token=' + response.credential[m
+[31m-            fetch(url).then(response => response.text()).then(data => )*/[m
+             if(responsePayload != null){[m
+                 m.request({[m
+ 	                method: "POST",[m
+ 	                url: "_ah/api/myApi/v1/addUser?access_token="+response.credential,[m
+                     params: {urlPhoto:responsePayload.picture}[m
+ 	            }).then(function(result){[m
+[31m-	        	    console.log("got:",result.properties.name);[m
+                     myAccount.me = response.credential;[m
+                     m.mount(document.body,PostForm)[m
+ 	            }).catch(function (e) {[m
+[36m@@ -74,7 +71,6 @@[m
+                 })[m
+                 .then(function(result) {[m
+                     myAccount.myListIFollowThem = result.items[m
+[31m-                    console.log("got list follows:",result.items)[m
+                 })[m
+             },[m
+             [m
+[36m@@ -111,7 +107,7 @@[m
+                     m('div',{class:'headPage'},[[m
+                         m('div',{class:'nameApp'},"TinyGram"),  [m
+                         m('div', {class:'searchBar'},[[m
+[31m-                            m("button",{class:'buttonSearchBar'},m("img",{class:'searchImage',"src":"search.png"})),[m
+[32m+[m[32m                            m("button",{class:'buttonSearchBar'},m("img",{class:'searchImage',"src":"image/search.png"})),[m
+                             m("input[type=textSearch]", {[m
+                                 class:'searchInput',[m
+                                 placeholder:"search account",[m
+[36m@@ -126,10 +122,10 @@[m
+                     m('div', {class:'blockDisplayPosts'}, [m
+                         myAccount.timeline.map(function(item){[m
+                             let postIsLike = false;[m
+[31m-                            let buttonImage = "emptyHeart.png"[m
+[32m+[m[32m                            let buttonImage = "image/emptyHeart.png"[m
+                             if(item.properties.likeU.includes(jwt_decode(myAccount.me).email)){[m
+                                 postIsLike = true;[m
+[31m-                                buttonImage = "fullHeart.png"[m
+[32m+[m[32m                                buttonImage = "image/fullHeart.png"[m
+                             }[m
+                             return m('div',{class:'blockOnePost'}, [[m
+                                 m('div',{class:'headPost'}, [[m
+[36m@@ -144,9 +140,9 @@[m
+                                                 url: "_ah/api/myApi/v1/likeMessage/"+ item.key.name +"/?access_token="+ myAccount.me[m
+                                             }).then(function(result) {[m
+                                                 if(!postIsLike){[m
+[31m-                                                vnode.srcElement.src = "fullHeart.png";[m
+[32m+[m[32m                                                vnode.srcElement.src = "image/fullHeart.png";[m
+                                                 }[m
+[31m-                                                console.log("bonsoir c'est like")[m
+[32m+[m[32m                                                console.log("The post is liked <3")[m
+                                             })[m
+                                         }},[m
+                                         m('img', {class:'imageLike','src':buttonImage})),[m
+[36m@@ -161,7 +157,7 @@[m
+                                                         myAccount.myListIFollowThem.push(result.properties.iFollowThem.pop())[m
+                                                     }[m
+                                                     m.redraw()[m
+[31m-                                                    console.log("bonjour c'est follow")[m
+[32m+[m[32m                                                    console.log("You are now following this account !")[m
+                                                 })[m
+                                             }},"Follow")[m
+                                 ]),[m
+[36m@@ -182,7 +178,6 @@[m
+                                         myAccount.timeline = myAccount.timeline.concat(result.items)[m
+                                         myAccount.cursorForNextPosts = result.nextPageToken[m
+                                         m.redraw()[m
+[31m-                                        console.log("next posts")[m
+                                     })[m
+                                 }[m
+                         },"Next")[m
+[36m@@ -198,7 +193,7 @@[m
+                             ]),[m
+                             myAccount.myListIFollowThem.map(function(item) {[m
+                                 return m("tr", [[m
+[31m-                                    m('td', {class:'cellImageUserFollowed'}, m('img', {class:'imageUserFollowed','src':"defaultImageUser.png"})),[m
+[32m+[m[32m                                    m('td', {class:'cellImageUserFollowed'}, m('img', {class:'imageUserFollowed','src':"image/defaultImageUser.png"})),[m
+                                     m('td', m('div', {class:"nameAccount"}, item.split('@')[0]))[m
+                                 ])[m
+                             })[m
+[36m@@ -237,90 +232,50 @@[m
+         }[m
+  [m
+  [m
+[31m- var MyPost = {[m
+[31m-        list: [],[m
+[31m-        nextToken: "",[m
+[31m-        loadList: function() {[m
+[31m-            return m.request({[m
+[31m-                method: "GET",[m
+[31m-                url: "_ah/api/myApi/v1/getPost?access_token="+myAccount.me})[m
+[31m-            .then(function(result) {[m
+[31m-                console.log("got:",result)[m
+[31m-                MyPost.list=result.items[m
+[31m-                if ('nextPageToken' in result) {[m
+[31m-                    MyPost.nextToken= result.nextPageToken[m
+[31m-                } else {[m
+[31m-                    MyPost.nextToken=""[m
+[31m-                }})[m
+[31m-        },[m
+[31m-        next: function() {[m
+[31m-            return m.request({[m
+[31m-                method: "GET",[m
+[31m-                url: "_ah/api/myApi/v1/mypost/"+myAccount.me+"?next="+MyPost.nextToken})[m
+[31m-            .then(function(result) {[m
+[31m-                console.log("got:",result)[m
+[31m-                result.items.map(function(item){MyPost.list.push(item)})[m
+[31m-                if ('nextPageToken' in result) {[m
+[31m-                    MyPost.nextToken= result.nextPageToken[m
+[31m-                } else {[m
+[31m-                    MyPost.nextToken=""[m
+[31m-                }})[m
+[31m-        },[m
+[31m-        postMessage: function() {[m
+[31m-            var data={[m
+[31m-                'body':PostForm.body,[m
+[31m-                'url':PostForm.url[m
+[32m+[m[32m        var MyPost = {[m
+[32m+[m[32m            list: [],[m
+[32m+[m[32m            nextToken: "",[m
+[32m+[m[32m            loadList: function() {[m
+[32m+[m[32m                return m.request({[m
+[32m+[m[32m                    method: "GET",[m
+[32m+[m[32m                    url: "_ah/api/myApi/v1/getPost?access_token="+myAccount.me})[m
+[32m+[m[32m                .then(function(result) {[m
+[32m+[m[32m                    MyPost.list=result.items[m
+[32m+[m[32m                    if ('nextPageToken' in result) {[m
+[32m+[m[32m                        MyPost.nextToken= result.nextPageToken[m
+[32m+[m[32m                    } else {[m
+[32m+[m[32m                        MyPost.nextToken=""[m
+[32m+[m[32m                    }})[m
+[32m+[m[32m            },[m
+[32m+[m[32m            next: function() {[m
+[32m+[m[32m                return m.request({[m
+[32m+[m[32m                    method: "GET",[m
+[32m+[m[32m                    url: "_ah/api/myApi/v1/mypost/"+myAccount.me+"?next="+MyPost.nextToken})[m
+[32m+[m[32m                .then(function(result) {[m
+[32m+[m[32m                    result.items.map(function(item){MyPost.list.push(item)})[m
+[32m+[m[32m                    if ('nextPageToken' in result) {[m
+[32m+[m[32m                        MyPost.nextToken= result.nextPageToken[m
+[32m+[m[32m                    } else {[m
+[32m+[m[32m                        MyPost.nextToken=""[m
+[32m+[m[32m                    }})[m
+[32m+[m[32m            },[m
+[32m+[m[32m            postMessage: function() {[m
+[32m+[m[32m                var data={[m
+[32m+[m[32m                    'body':PostForm.body,[m
+[32m+[m[32m                    'url':PostForm.url[m
+[32m+[m[32m                }[m
+[32m+[m[32m                return m.request({[m
+[32m+[m[32m                    method: "POST",[m
+[32m+[m[32m                    url:"_ah/api/myApi/v1/postMessage?access_token="+myAccount.me,[m
+[32m+[m[32m                    params : data,[m[41m            [m
+[32m+[m[32m                })[m
+[32m+[m[32m                .then(function(result) {[m
+[32m+[m[32m                    console.log("got:",result)[m
+[32m+[m[32m                }).catch(function (e) {[m
+[32m+[m[32m                    console.log(e);[m
+[32m+[m[32m                })[m
+             }[m
+[31m-            return m.request({[m
+[31m-                method: "POST",[m
+[31m-                url:"_ah/api/myApi/v1/postMessage?access_token="+myAccount.me,[m
+[31m-                params : data,            [m
+[31m-            })[m
+[31m-            .then(function(result) {[m
+[31m-                console.log("got:",result)[m
+[31m-            }).catch(function (e) {[m
+[31m-                console.log(e);[m
+[31m-            })[m
+[31m-        }[m
+[31m-    }[m
+[31m-        [m
+[31m-        /*[m
+[31m-        var PostView = {[m
+[31m-        oninit: MyPost.loadList,[m
+[31m-        view: function() {[m
+[31m-                return m('div', [[m
+[31m-            m('div',{class:'listMyPost'},"My Posts"),[m
+[31m-            m('table', {class:'table is-striped',"table":"is-striped"},[[m
+[31m-                m('tr', [[m
+[31m-                m('th', {width:"50px"}, "like"),[m
+[31m-                m('th', {width:"50px"}, "del"),[m
+[31m-                m('th', {width:"50px"}, "Bodys"),[m
+[31m-                m('th', {width:"50px"}, "Urls"),[m
+[31m-                m('th', {width:"50px"}, "Like"),[m
+[31m-                ]),[m
+[31m-                MyPost.list.map(function(item) {[m
+[31m-                return m("tr", [[m
+[31m-                    m("td", m("button", {onclick: function(e) {[m
+[31m-                        console.log("like:"+item.key.id)[m
+[31m-                        }},"like")),[m
+[31m-                        m("td", m("button", {onclick: function(e) {[m
+[31m-                            console.log("del:"+item.key.id)[m
+[31m-                        }},"del")),[m
+[31m-                    m('td', m('label', item.properties.body)),[m
+[31m-                    m('td', m('img', {class: 'is-rounded', 'src': item.properties.url})),[m
+[31m-                    m('td', m('label', item.properties.likec)),[m
+[31m-                ])[m
+[31m-                }),[m
+[31m-        //	    m("div", isError ? "An error occurred" : "Saved"),[m
+[31m-                m('button',{[m
+[31m-                    class: 'button is-link',[m
+[31m-                    onclick: function(e) {MyPost.next()}[m
+[31m-                    },[m
+[31m-                "Next"),[m
+[31m-                ])[m
+[31m-            ])[m
+         }[m
+[31m-        }*/[m
+ [m
+         m.mount(document.body,LogPage)        [m
+     </script>[m
+[1mdiff --git a/src/main/webapp/search.png b/src/main/webapp/search.png[m
+[1mdeleted file mode 100644[m
+[1mindex 4b154a9..0000000[m
+Binary files a/src/main/webapp/search.png and /dev/null differ
