@@ -78,6 +78,46 @@ body {
     right: 2%;
 }
 
+.posting {
+    position: fixed;
+    background-color: white;
+    border: solid 2px #40ffbf;
+    border-radius: 5px;
+    box-shadow: 10px 10px 10px lightblue;
+    width : 250px;
+    height : 275px;
+    top: 30%;
+    left: 50px;
+    overflow-y: scroll;
+    /* Hide scrollbar for : */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.posting::-webkit-scrollbar {
+    display: none;
+}
+
+.postingTitle {
+    background-color: rgb(119, 180, 230);
+    text-align: center;
+    width: inherit;
+    font-weight: bold;
+    font-family: system-ui;
+    color: transparent;
+    background: -webkit-linear-gradient(120deg,#42e5eb 0%,#41e9b1 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.field {
+    font-weight: bold;
+    font-family: system-ui;
+    margin: 20px 2px;
+}
+
 .blockApplication { /* useful to center the posts with any screen width */
     position: relative;
     top: 75px;
@@ -192,59 +232,6 @@ body {
     align-self: center;
 }
 
-.imageUserFollowed {
-    height: 32px;
-    width: 32px;
-    border-radius: 50%;
-    background-color: aquamarine;
-}
-
-.cellImageUserFollowed {
-    /* For center, because the image is 32x32 */
-    /* and the column heigth is 40px */
-    padding-top: 4px;
-}
-
-.posting {
-    position: fixed;
-    background-color: white;
-    border: solid 2px #40ffbf;
-    border-radius: 5px;
-    box-shadow: 10px 10px 10px lightblue;
-    width : 250px;
-    height : 275px;
-    top: 30%;
-    left: 50px;
-    overflow-y: scroll;
-    /* Hide scrollbar for : */
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-}
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-.posting::-webkit-scrollbar {
-    display: none;
-}
-
-.postingTitle {
-    background-color: rgb(119, 180, 230);
-    text-align: center;
-    width: inherit;
-    font-weight: bold;
-    font-family: system-ui;
-    color: transparent;
-    background: -webkit-linear-gradient(120deg,#42e5eb 0%,#41e9b1 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.field {
-    font-weight: bold;
-    font-family: system-ui;
-    margin: 20px 2px;
-}
-
 .blockListIFollowThem {
     position: fixed;
     background-color: white;
@@ -295,6 +282,19 @@ body {
     width: 168px;
     overflow: hidden;
     /* height: 20px; Only one column have to define a height */
+}
+
+.cellImageUserFollowed {
+    /* For center, because the image is 32x32 */
+    /* and the column heigth is 40px */
+    padding-top: 4px;
+}
+
+.imageUserFollowed {
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    background-color: aquamarine;
 }
 
 .nameAccount {
