@@ -1,17 +1,31 @@
+= PROJET TINYGRAM
+
+== Membres
 Membres du groupe : 
     - Mathis EMERIAU
     - Tristan RAME
     - Gabriel POUPLIN
 
+== Description
 L'objectif de ce projet était de produire une version très simplifié de Instagram afin de comprendre comment fonctionne les réseaux sociaux.
-
 On devait ainsi réutiliser les compétences étudiées en cours de Web & Cloud and Datastores par monsieur Pascal Molli.
 
-Lien du github : https://gitlab.univ-nantes.fr/E193433D/tinygram.git
+Un utilisateur doit pouvoir *se connecter* avec un compte google et peut :
+. Poster une image avec du texte
+. Suivre une autre personne
+. Aimer un post
+. Voir les posts les plus récents
 
-Lien du site : https://tinygram-365116.ew.r.appspot.com/
+Langages utilisés : Java et Mithril
 
-Lien du service REST : https://tinygram-365116.ew.r.appspot.com/_ah/api/myApi/v1/
+[cols=1]
+|===
+|Lien du github : https://gitlab.univ-nantes.fr/E193433D/tinygram.git
+
+|Lien du site : https://tinygram-365116.ew.r.appspot.com/
+
+|Lien du service REST : https://tinygram-365116.ew.r.appspot.com/_ah/api/myApi/v1/
+|===
 
 Voici les captures de nos kinds : 
 
@@ -45,7 +59,10 @@ name : Le mail d'un User.
 
 photo : l'url de la photo de profile google d'un User.
 
+.Problème et améliorations ?
+===
 Suite à plusieurs tentatives infructueuses de réalisation d'un Benchmark en essayant de créer un rapport dans la partie Trace de appEngine nous avons décidé d'abandonner la réalisation de celui-ci.
+Néanmoins, il est possible d'envoyer beaucoup de requêtes grâce à une boucle java et des threads et de noter quand l'application n'accepte plus de demande.
 
-Toutefois nous avons conscience que notre application souffre de quelque problemes notemment concernant les likes. En effet nous utilisons un compteur unique ce qui veut dire que si 1000 personne like le même message en même temps, elles devront attendre avant que leur demande soit pris en compte.
-
+Toutefois, nous avons conscience que notre application souffre de quelques problèmes notamment concernant les likes. En effet, nous utilisons un compteur unique ce qui veut dire que si 1000 personne like le même message en même temps, elles devront attendre avant que leur demande soit prise en compte.
+===
