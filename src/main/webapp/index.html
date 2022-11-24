@@ -142,8 +142,8 @@
                 m("form", {
                     onsubmit: function(e) {
                         e.preventDefault()
-                        if (url="") {url="https://dummyimage.com/320x200/000/fff&text="+Date.now()} 
-                        if (body="") {body="bla bla bla \n"+Date.now()}
+                        if (MainPage.url=="") {MainPage.url="https://i.kym-cdn.com/entries/icons/original/000/019/277/confusedtravolta.jpg"} 
+                        if (MainPage.body=="") {MainPage.body="Manque quelque chose ici nan ?"}
                         MyPost.postMessage()
                     }
                 },  // Part for POST an url with a text
