@@ -71,6 +71,8 @@
             })
             .then(function(result) {
                 console.log("got:",result)
+                myAccount.loadTimeline()
+                console.log("Refreshing the timeline")                
             }).catch(function (e) {
                 console.log(e)
             })
