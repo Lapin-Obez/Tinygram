@@ -45,6 +45,16 @@ public class TinyGramEndPoint {
     private static final Logger log = Logger.getLogger(TinyGramEndPoint.class.getName());
     Random r = new Random();
 
+    /**
+     * addUser adds a new entity User if the account wasn't yet in the datastore.
+     * urlPhoto corresponds to the image of the google account of the user, it may be null.
+     * user corresponds to the credential of the google account.
+     * 
+     * @param urlPhoto
+     * @param user
+     * @return Entity
+     * @throws UnauthorizedException
+     */
     @ApiMethod(name = "addUser", httpMethod = HttpMethod.POST)
 	public Entity addUser(@Nullable @Named("urlPhoto")String urlPhoto,User user) throws UnauthorizedException {
 
@@ -69,6 +79,14 @@ public class TinyGramEndPoint {
         }
 		return e;
 	}
+
+    /**
+     * myFollows returns the list of all the accounts a user has followed.
+     * 
+     * @param user
+     * @return
+     * @throws UnauthorizedException
+     */
     @ApiMethod(name = "myFollows", httpMethod = HttpMethod.GET)
 	public List<String> myFollows(User user) throws UnauthorizedException {
 		if (user == null) {
@@ -83,6 +101,14 @@ public class TinyGramEndPoint {
 	    return  l;
 	}
 
+    /**
+     * myPicture returns the user picture. A user is represented by his email.
+     * This method is not called yet in index.html.
+     * 
+     * @param mailUser
+     * @return
+     * @throws UnauthorizedException
+     */
     @ApiMethod(name = "myPicture", httpMethod = HttpMethod.GET)
 	public Object myPicture(@Named("mailUser")String mailUser) throws UnauthorizedException {
 		if (mailUser == null) {
@@ -97,6 +123,16 @@ public class TinyGramEndPoint {
 	    return o;
 	}
 
+    /**
+     * followSomeone returns the entity User with its new list of followed accounts.
+     * mailUser is the email of the account me wants to follow.
+     * 
+     * @param mailUser
+     * @param me
+     * @return
+     * @throws UnauthorizedException
+     * @throws Exception
+     */
     @ApiMethod(name = "followSomeone", httpMethod = HttpMethod.GET)
     public Entity followSomeone(@Named("mailUser")String mailUser,User me)throws UnauthorizedException, Exception {
         if (me == null) {
@@ -127,7 +163,15 @@ public class TinyGramEndPoint {
         return e;
     }
 
-    //Renvoie les post d'un user passé en paramètre
+    /**
+     * userPost returns the 2 posts the more recent of a user reprenseted by his property name.
+     * cursorString is a token to recover the next posts from the post identified by this cursorString.
+     * This method is not called yet in index.html.
+     * 
+     * @param name
+     * @param cursorString
+     * @return
+     */
 	@ApiMethod(name = "userPost", httpMethod = HttpMethod.GET)
 	public CollectionResponse<Entity> userPost(@Named("name") String name, @Nullable @Named("next") String cursorString) {
 	    Query q = new Query("Post").setFilter(new FilterPredicate("owner", FilterOperator.EQUAL, name));
@@ -154,9 +198,16 @@ public class TinyGramEndPoint {
 	    cursorString = results.getCursor().toWebSafeString();
 	    
 	    return CollectionResponse.<Entity>builder().setItems(results).setNextPageToken(cursorString).build();
-	    
 	}
     
+    /**
+     * allPost returns the more recent posts from the last post identified by the cursorString.
+     * cursorString may be null. If it is, allPost returns the more recent posts of the entire datastore.
+     * 
+     * @param cursorString
+     * @return
+     * @throws UnauthorizedException
+     */
 	@ApiMethod(name = "allPost",httpMethod = ApiMethod.HttpMethod.GET)
 	public CollectionResponse<Entity> allPost(@Nullable @Named("next") String cursorString)
 			throws UnauthorizedException {     
@@ -176,7 +227,15 @@ public class TinyGramEndPoint {
 		return CollectionResponse.<Entity>builder().setItems(results).setNextPageToken(cursorString).build();
 	}
 
-
+    /**
+     * postMessage returns the post created.
+     * pm is a PostMessage which contains the url of the image and the text of the future post.
+     * 
+     * @param user
+     * @param pm
+     * @return
+     * @throws UnauthorizedException
+     */
 	@ApiMethod(name = "postMessage", httpMethod = HttpMethod.POST)
 	public Entity postMessage(User user, PostMessage pm) throws UnauthorizedException {
 
@@ -206,6 +265,18 @@ public class TinyGramEndPoint {
 	}
 
     //Notre gestion des likes ne scale pas mais elle est fonctionnelle.
+
+    /**
+     * likeMessage returns the post updated which is liked.
+     * idMessage corresponds of the name of the post (format = nameAccount:id).
+     * Our management of likes don't scale but it works.
+     * 
+     * @param idMessage
+     * @param user
+     * @return
+     * @throws UnauthorizedException
+     * @throws Exception
+     */
     @ApiMethod(name = "likeMessage", httpMethod = HttpMethod.GET)
     public Entity likeMessage(@Named("idMessage")String idMessage,User user)throws UnauthorizedException, Exception {
         if (user == null) {
@@ -219,7 +290,7 @@ public class TinyGramEndPoint {
         PreparedQuery pq = datastore.prepare(query);
         Entity e = pq.asSingleEntity();
         //log.info("ENTITY" +e.toString());
-        //Si on récupère plusieurs entity y a un problème wala
+        //If we have more than one entity, there is a problem
         if(e == null) throw new UnauthorizedException("Mehrere Nachrichten auf derselben ID, ACHTUNG !!!!!");
 
         try {

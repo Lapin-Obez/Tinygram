@@ -142,6 +142,7 @@ body {
     background-color: white;
     width: auto;
     height: auto;
+    border-top: solid 1px lightblue;
 }
 
 .headPost {
