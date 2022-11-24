@@ -2,10 +2,7 @@
 
 == Membres
 
-Membres du groupe : 
-    - Mathis EMERIAU
-    - Tristan RAME
-    - Gabriel POUPLIN
+Membres du groupe : Mathis EMERIAU - Tristan RAME - Gabriel POUPLIN
 
 == Description
 
@@ -32,37 +29,60 @@ Langages utilisés : Java et Mithril
 |Lien du service REST : https://tinygram-365116.ew.r.appspot.com/_ah/api/myApi/v1/
 |===
 
-+++<u>Voici les captures de nos kinds :</u>+++
+== Captures de nos kinds :
 
 Capture des post des messages :
 
 image::CapturePost.png[]
 
-La colonne ID : l'identifiant du message est composé du nom de l'auteur suivi de la date du post
+[cols=2]
+|===
+| Colonne
+| Description
 
-La colonne body : Le corps du message, il s'agit de texte.
+| ID
+| L'identifiant du message est composé du nom de l'auteur suivi de la date du post.
 
-date : La date du message.
+| body
+| Le corps du message, il s'agit de texte.
 
-likeU : La liste des personnes qui ont like le message. Elle contient le mail des gens qui ont liké.
+| date
+| La date du message
 
-likec : un entier qui comptabilise le nombre de like.
+| likeU
+| La liste des personnes qui ont like le message. Elle contient le mail des gens qui ont liké.
 
-owner : Le mail de l'auteur du post.
+| likec
+| Un entier qui comptabilise le nombre de like du post.
 
-url : l'URL de la photo qui a été posté par l'utilisateur.
+| owner
+| Le mail de l'auteur du post.
+
+| url
+| L'URL de la photo qui a été posté par l'utilisateur.
+|===
 
 Capture des Users : 
 
 image::CaptureUser.png[]
 
-ID : l'identifiant du Users
+[cols=2]
+|===
+| Colonne
+| Description
 
-iFollowThem : La liste des gens qu'un User suit.
+| ID
+| L'identifiant du User.
 
-name : Le mail d'un User.
+| iFollowThem
+| La liste des gens qu'un User suit.
 
-photo : l'url de la photo de profile google d'un User.
+| name
+| Le mail d'un User.
+
+| photo
+| L'url de la photo de profile google d'un User.
+|===
 
 == Problème et améliorations ?
 
